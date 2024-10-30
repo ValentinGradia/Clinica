@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Clinica": {
+    "clinica": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Clinica:build:production"
+              "buildTarget": "clinica:build:production"
             },
             "development": {
-              "buildTarget": "Clinica:build:development"
+              "buildTarget": "clinica:build:development"
             }
           },
           "defaultConfiguration": "development"
