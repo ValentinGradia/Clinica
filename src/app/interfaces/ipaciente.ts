@@ -5,4 +5,5 @@ export interface IPaciente {
 	dni : number,
 	obraSocial : string,
 	correo: string
+	contrasenia : string
 }

@@ -4,4 +4,5 @@ export interface IAdmin {
 	edad : number,
 	dni : number,
 	correo: string,
+	contrasenia : string
 }

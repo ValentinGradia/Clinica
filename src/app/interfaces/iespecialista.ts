@@ -5,4 +5,6 @@ export interface IEspecialista {
 	dni : number,
 	especialidad : string[]
 	correo: string
+	contrasenia : string,
+	aprobado : boolean
 }
