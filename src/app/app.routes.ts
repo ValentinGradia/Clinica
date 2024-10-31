@@ -4,6 +4,7 @@ import { BienvenidaComponent } from './componentes/bienvenida/bienvenida.compone
 import { RegistroComponent } from './componentes/registro/registro.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
+import { usuarioGuard } from './guards/usuario.guard';
 
 export const routes: Routes = [
 	{
@@ -25,6 +26,7 @@ export const routes: Routes = [
 	},
 	{
 		path : 'usuarios',
-		component : UsuariosComponent
+		component : UsuariosComponent,
+		canActivate : [usuarioGuard]
 	}
 ];
