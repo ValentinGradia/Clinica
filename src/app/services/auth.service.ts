@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, Unsubscribe, User, UserCredential } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { BehaviorSubject,Observable } from 'rxjs';
+import { UsuarioService } from './usuario.service';
 
 
 @Injectable({
@@ -10,15 +11,19 @@ import { BehaviorSubject,Observable } from 'rxjs';
 })
 export class AuthService {
 
-  constructor(private auth : Auth, private router : Router) { }
+  constructor(private auth : Auth, private router : Router, private usuario: UsuarioService) { }
 
   correoUsuarioObservable = new BehaviorSubject<string | null>(null);//tipo de observable
+  tipoUsuario = new BehaviorSubject<string | null>(null);
   correoUsuario$ = this.correoUsuarioObservable.asObservable(); //para poder tener los metodos de un observable y exponerlo a otros componentes
 
-  setearCorreo(email : string)
+  async setearCorreo(email : string)
   {
     //metodo next asigno el email al objeto
     this.correoUsuarioObservable.next(email);
+    await this.usuario.buscarCorreo(email).then((data) => {
+      console.log(data);
+    })
   }
 
   limpiarCorreo()

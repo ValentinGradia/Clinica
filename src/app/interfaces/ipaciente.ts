@@ -1,4 +1,5 @@
 export interface IPaciente {
+	id : string,
 	nombre : string,
 	apellido : string,
 	edad : number,

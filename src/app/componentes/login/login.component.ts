@@ -19,6 +19,8 @@ export class LoginComponent {
   correo !: string;
   contrasenia !: string;
 
+  spinner : boolean = false;
+
   completarDatos(tipo : string) : void
   {
     if(tipo == 'usuario')
@@ -40,6 +42,7 @@ export class LoginComponent {
 
   async iniciar() : Promise<void>
   {
+    this.spinner = true;
     try
     {
       var userCredential = await this.auth.loguearUsuario(this.correo,this.contrasenia);
@@ -47,13 +50,14 @@ export class LoginComponent {
       {
         throw new Error("Correo/Contraseña incorrecta");
       }
+      await this.auth.setearCorreo(this.correo);
+      this.spinner = false;
       Swal.fire({
         icon: "success",
         title: "Sesion iniciada con exito",
         showConfirmButton: false,
         timer: 1500
       });
-      this.auth.setearCorreo(this.correo);
       this.router.navigateByUrl('/inicio');
     }
     catch(error : any)

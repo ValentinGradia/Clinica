@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
+import Swal from 'sweetalert2';
 import { IEspecialista } from '../../interfaces/iespecialista';
 
 @Component({
@@ -36,8 +37,16 @@ export class UsuariosComponent implements OnInit {
   }
 
 
-  aprobar(especialista: any) : void
+  aprobar(especialista: IEspecialista) : void
   {
+    this.usuarios.aprobarEspecialista(especialista.id);
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Especialista aprobado",
+      showConfirmButton: false,
+      timer: 1500
+    });
 
   }
 

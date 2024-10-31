@@ -16,11 +16,11 @@
   
   .styled-table th, .styled-table td {
     padding: 10px 10px 0;
-    border-right: 2px solid #ddd; /* Borde entre columnas */
+    border-right: 2px solid #ddd;
   }
   
   .styled-table th:last-child, .styled-table td:last-child {
-    border-right: none; /* Elimina el borde en la última columna */
+    border-right: none; 
   }
   
   .styled-table tbody tr {
@@ -46,6 +46,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
-    z-index: 9999; /* Asegura que esté sobre otros elementos */
+    background-color: rgba(152, 152, 152, 0.8); 
+    z-index: 9999; 
   }

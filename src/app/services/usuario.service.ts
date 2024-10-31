@@ -45,6 +45,49 @@ export class UsuarioService {
     return collectionData(especialistas, { idField: 'id' }) as Observable<IEspecialista[]>
   }
 
+  //Con este metodo lo que hacemos es buscar el correo para ver de que tipo de usuario pertenece (PARA LA AUTENTICACION)
+  async buscarCorreo(correo : string) : Promise<string>
+  {
+    var col = collection(this.firestore, 'Especialistas');
+
+    var queryEspecialista = query(col,where('correo','==',correo));
+
+    var especialista = await getDocs(queryEspecialista);
+
+    if(!especialista.empty)
+    {
+      return 'Especialista'
+    }
+    else
+    {
+      var col = collection(this.firestore, 'Pacientes');
+
+      var pacienteQuery = query(col,where('correo','==',correo));
+
+      var paciente = await getDocs(pacienteQuery);
+
+      if(!paciente.empty)
+      {
+        return 'Paciente';
+      }
+      else{
+        return 'Admin';
+      }
+    }
+
+  }
+
+  aprobarEspecialista(id : string) : void
+  {
+    const col = collection(this.firestore, 'Especialistas');
+    const documento = doc(col,id)
+    updateDoc(documento,{
+      aprobado: true
+    });
+  }
+
+  
+
   traerPacientes() : Observable<any>
   {
     const col = collection(this.firestore, 'Pacientes');
