@@ -1,14 +1,20 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { CommonEngine } from '@angular/ssr';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
 export class RegistroComponent {
 
+  primerFotoCargada : boolean = false;
+  segundoFotoCargada : boolean = false;
 
   agregarInputEspecialidad() : void
   {
@@ -22,4 +28,21 @@ export class RegistroComponent {
     div?.appendChild(input);
   }
 
-}
+  onFileSelected(event: Event) : void
+  {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0)   
+    {
+      this.primerFotoCargada = true;
+    }
+  }
+
+  segundaFoto(event: Event) : void
+  {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0)   
+    {
+      this.segundoFotoCargada = true;
+    }
+  }
+}             

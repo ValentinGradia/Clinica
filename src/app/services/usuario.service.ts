@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Firestore, collection,addDoc,getDoc,getDocs,updateDoc, collectionData, doc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection,addDoc,getDoc,getDocs,updateDoc, collectionData, doc, deleteDoc, where, query } from '@angular/fire/firestore';
 import { IAdmin } from '../interfaces/iadmin';
 import { IEspecialista } from '../interfaces/iespecialista';
 import { IPaciente } from '../interfaces/ipaciente';
@@ -36,13 +36,13 @@ export class UsuarioService {
     });
   }
 
-  traerEspecialistas() : Observable<any>
+  traerEspecialistas(noAprobados: boolean) : Observable<IEspecialista[]>
   {
     const col = collection(this.firestore, 'Especialistas');
-    const obvervable = collectionData(col);
-    
 
-    return obvervable; //hacer el subsrcribe desde el componente
+    const especialistas = noAprobados ? query(col,where('aprobado','==',false)) : col;
+
+    return collectionData(especialistas, { idField: 'id' }) as Observable<IEspecialista[]>
   }
 
   traerPacientes() : Observable<any>

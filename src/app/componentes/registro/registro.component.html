@@ -30,6 +30,16 @@
 			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
 			  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
 			</div>
+			<div class="mt-5 flex flex-row justify-evenly w-4/6">
+				@if (!primerFotoCargada) {
+					<i id="primerFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
+				}
+				@else {<i id="primerFoto" class="fa-solid fa-check fa-2xl"></i>}
+				<input type="file" #fileInput class="file-input-hidden" file (change)="onFileSelected($event)">
+
+				<i id="segundaFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
+				<input type="file" #fileInput class="file-input-hidden" file (change)="segundaFoto($event)">
+			</div>
 			<button type="button" class="btn btn-secondary btn-lg mt-10">Guardar paciente</button>
 		  </div>
 	</div>

@@ -1,1 +1,57 @@
-<p>usuarios works!</p>
+<div class="grid grid-cols-2 w-full">
+	<div class="mt-10 flex flex-col  ml-20">
+		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Nombre</label>
+		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm ">
+		  <input type="text" name="nombre" id="nombre"  class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+		</div>
+		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Apellido</label>
+		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+		</div>
+		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Edad</label>
+		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+		</div>
+		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">DNI</label>
+		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+		</div>
+		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Mail</label>
+		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+		</div>
+		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Contraseña</label>
+		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+		</div>
+		<div class="mt-5 max-w-screen-sm">
+			<i id="segundaFoto" class="ml-20 fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
+			<input type="file" #fileInput class="file-input-hidden" file (change)="cargarFoto($event)">
+		</div>
+		<button type="button" class="btn btn-secondary btn-lg mt-10 w-96">Guardar admin</button>
+	  </div>
+	  <div class="p-5 text-center h-full">
+		<h1>Especialistas </h1>
+		<div class="bg-slate-300 h-full mt-4" style="max-height: 500px;overflow-y: scroll;">
+			<table class="styled-table">
+				<tbody>
+					@for (especialista of especialistas; track $index) {
+						<tr>
+							<td class="text-left"><p>{{especialista.nombre}} {{especialista.apellido}}</p></td>
+							<td class="pt-0"><button (click)="aprobar(especialista)" type="button" class="btn btn-secondary">Aprobar especialista</button></td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	  </div>
+</div>
+
+@if (mostrarSpinner) {
+	<div class="spinner-container">
+		<div class="spinner-border m-5" style="height: 80px;width: 80px;" role="status">
+		</div>
+	</div>
+}
+
+

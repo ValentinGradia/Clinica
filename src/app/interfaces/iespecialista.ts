@@ -1,4 +1,5 @@
 export interface IEspecialista {
+	id : string,
 	nombre : string,
 	apellido : string,
 	edad : number,
