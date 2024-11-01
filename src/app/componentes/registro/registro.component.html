@@ -2,80 +2,86 @@
 	<div class="flex flex-col p-10 ">
 		<h1 class="text-4xl font-bold text-gray-600">Pacientes</h1>
 		<div class="mt-10">
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Nombre</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre"  class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Apellido</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Edad</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">DNI</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Obra social</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Mail</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Contraseña</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<div class="mt-5 flex flex-row justify-evenly w-4/6">
-				@if (!primerFotoCargada) {
-					<i id="primerFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
-				}
-				@else {<i id="primerFoto" class="fa-solid fa-check fa-2xl"></i>}
-				<input type="file" #fileInput class="file-input-hidden" file (change)="onFileSelected($event)">
+			<form [formGroup]="credentials">
 
-				<i id="segundaFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
-				<input type="file" #fileInput class="file-input-hidden" file (change)="segundaFoto($event)">
-			</div>
-			<button type="button" class="btn btn-secondary btn-lg mt-10">Guardar paciente</button>
+				<label for="nombre" class="block text-lg mt-2 font-medium text-gray-900">Nombre</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="nombre" type="text" name="nombre" id="nombre"  class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="apellido" class="block text-lg mt-2 font-medium text-gray-900">Apellido</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="apellido" type="text" name="apellido" id="apellido" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="edad" class="block text-lg mt-2 font-medium text-gray-900">Edad</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="edad" type="text" name="edad" id="edad" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="dni" class="block text-lg mt-2 font-medium text-gray-900">DNI</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="dni" type="text" name="dni" id="dni" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="obraSocial" class="block text-lg mt-2 font-medium text-gray-900">Obra social</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="obraSocial" type="text" name="obraSocial" id="obraSocial" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="correo" class="block text-lg mt-2 font-medium text-gray-900">Correo</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input type="text" formControlName="correo" name="correo" id="correo" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="contrasenia" class="block text-lg mt-2 font-medium text-gray-900">Contraseña</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="contrasenia"  type="text" name="contrasenia" id="contrasenia" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<div class="mt-5 flex flex-row justify-evenly w-4/6">
+					@if (!primerFotoCargada) {
+						<i id="primerFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
+					}
+					@else {<i id="primerFoto" class="fa-solid fa-check fa-2xl"></i>}
+					<input type="file" #fileInput class="file-input-hidden" file (change)="onFileSelected($event)">
+	
+					<i id="segundaFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
+					<input type="file" #fileInput class="file-input-hidden" file (change)="segundaFoto($event)">
+				</div>
+				<button (click)="guardarPaciente()" type="button" class="btn btn-secondary btn-lg mt-10">Guardar paciente</button>
+			</form>
 		  </div>
 	</div>
 	<div class="flex flex-col p-10 ">
 		<h1 class="text-4xl font-bold text-gray-600">Especialistas</h1>
 		<div class="mt-10">
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Nombre</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre"  class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Apellido</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full max-w-screen-sm rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Edad</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">DNI</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Especialidad</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm" id="especialidad">
-			  <input type="text" name="nombre" id="nombre" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<button type="button" (click)="agregarInputEspecialidad()" class="btn btn-secondary mt-2">Agregar especialidad</button>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Mail</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Contraseña</label>
-			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-			  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-			</div>
-			<button type="button" class="btn btn-secondary btn-lg mt-10">Guardar especialista</button>
+			<form [formGroup]="credenciales">
+
+				<label for="Enombre" class="block text-lg mt-2 font-medium text-gray-900">Nombre</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="Enombre" type="text" name="Enombre" id="Enombre"  class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="Eapellido" class="block text-lg mt-2 font-medium text-gray-900">Apellido</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="Eapellido" type="text" name="Eapellido" id="Eapellido" class="block w-full max-w-screen-sm rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="Eedad" class="block text-lg mt-2 font-medium text-gray-900">Edad</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="Eedad" type="text" name="Eedad" id="Eedad" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="Edni" class="block text-lg mt-2 font-medium text-gray-900">DNI</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="Edni" type="text" name="Edni" id="Edni" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="Eespecialidad" class="block text-lg mt-2 font-medium text-gray-900">Especialidad</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm" id="especialidad">
+				  <input formControlName="Eespecialidad" type="text" name="Eespecialidad" id="Eespecialidad" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<button type="button" (click)="agregarInputEspecialidad()" class="btn btn-secondary mt-2">Agregar especialidad</button>
+				<label for="Ecorreo" class="block text-lg mt-2 font-medium text-gray-900">Correo</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="Ecorreo" type="text" name="Ecorreo" id="Ecorreo" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<label for="Econtrasenia" class="block text-lg mt-2 font-medium text-gray-900">Contraseña</label>
+				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				  <input formControlName="Econtrasenia" type="text" name="Econtrasenia" id="Econtrasenia" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				</div>
+				<button (click)="guardarEspecialista()" type="button" class="btn btn-secondary btn-lg mt-10">Guardar especialista</button>
+			</form>
 		  </div>
 	</div>
 </div>

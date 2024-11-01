@@ -22,7 +22,7 @@ export class AuthService {
     //metodo next asigno el email al objeto
     this.correoUsuarioObservable.next(email);
     await this.usuario.buscarCorreo(email).then((data) => {
-      console.log(data);
+      this.tipoUsuario.next(data);
     })
   }
 
