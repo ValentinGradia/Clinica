@@ -1,5 +1,5 @@
 export interface IEspecialista {
-	id : string,
+	id ?: string,
 	nombre : string,
 	apellido : string,
 	edad : number,
@@ -8,4 +8,5 @@ export interface IEspecialista {
 	correo: string
 	contrasenia : string,
 	aprobado : boolean
+	foto : Promise<string>
 }

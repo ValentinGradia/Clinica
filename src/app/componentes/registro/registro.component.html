@@ -34,13 +34,17 @@
 				</div>
 				<div class="mt-5 flex flex-row justify-evenly w-4/6">
 					@if (!primerFotoCargada) {
-						<i id="primerFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
+						<i id="primerFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput1.click()"></i>
 					}
 					@else {<i id="primerFoto" class="fa-solid fa-check fa-2xl"></i>}
-					<input type="file" #fileInput class="file-input-hidden" file (change)="onFileSelected($event)">
+					<input type="file" #fileInput1 class="file-input-hidden" file (change)="onFileSelected($event,'primera')">
+
+					@if (!segundoFotoCargada) {
+						<i id="segundaFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput2.click()"></i>
+					}
+					@else {<i id="segundaFoto" class="fa-solid fa-check fa-2xl"></i>}
 	
-					<i id="segundaFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
-					<input type="file" #fileInput class="file-input-hidden" file (change)="segundaFoto($event)">
+					<input type="file" #fileInput2 class="file-input-hidden" file (change)="onFileSelected($event, 'segunda')">
 				</div>
 				<button (click)="guardarPaciente()" type="button" class="btn btn-secondary btn-lg mt-10">Guardar paciente</button>
 			</form>
@@ -70,6 +74,9 @@
 				<label for="Eespecialidad" class="block text-lg mt-2 font-medium text-gray-900">Especialidad</label>
 				<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm" id="especialidad">
 				  <input formControlName="Eespecialidad" type="text" name="Eespecialidad" id="Eespecialidad" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+				  @for (elemento of inputsCreadosEspecialidades; track $index) {
+					<input type="text" [className]="elemento.className" [(ngModel)]="elemento.value" formControlName="Eespecialidad">
+				  }
 				</div>
 				<button type="button" (click)="agregarInputEspecialidad()" class="btn btn-secondary mt-2">Agregar especialidad</button>
 				<label for="Ecorreo" class="block text-lg mt-2 font-medium text-gray-900">Correo</label>
@@ -85,3 +92,11 @@
 		  </div>
 	</div>
 </div>
+
+
+@if (spinner) {
+	<div class="spinner-container">
+		<div class="spinner-border m-5" style="height: 80px;width: 80px;" role="status">
+		</div>
+	</div>
+}

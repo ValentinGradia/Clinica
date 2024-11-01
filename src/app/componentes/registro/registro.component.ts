@@ -1,9 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { FormBuilder, FormsModule, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonEngine } from '@angular/ssr';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
+import { UsuarioService } from '../../services/usuario.service';
+import { IPaciente } from '../../interfaces/ipaciente';
+import { StorageService } from '../../services/storage.service';
+import { IEspecialista } from '../../interfaces/iespecialista';
 
 
 @Component({
@@ -18,11 +23,19 @@ export class RegistroComponent {
   primerFotoCargada : boolean = false;
   segundoFotoCargada : boolean = false;
 
+  primerImagen : Blob | null = null;
+  segundaImagen: Blob | null = null;
+  tercerImagen: Blob | null = null;
+
+  inputsCreadosEspecialidades: { value: string; className: string; placeholder: string }[] = [];
+
+  spinner: boolean = false;
+
   protected credentials !: FormGroup;
 
   protected credenciales !: FormGroup;
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder, private auth: AuthService, private db: UsuarioService, private storage: StorageService){
     this.credentials = this.fb.group({
       correo: ['',[Validators.required, Validators.email]],
       contrasenia:['',[Validators.required, Validators.minLength(6)]],
@@ -102,31 +115,81 @@ export class RegistroComponent {
   }
 
 
-  guardarPaciente() : void
+  async guardarPaciente() : Promise<void>
   {
     if(this.credentials.valid)
     {
-      console.log(this.nombre);
+      this.mostrarSpinner();
+
+      this.auth.registrarUsuario(this.correo?.value,this.contrasenia?.value);
+
+      const primerUrl = this.storage.subir(this.primerImagen!,`primerFoto-${this.nombre?.value}-${this.dni?.value}`);
+      const segundaUrl = this.storage.subir(this.segundaImagen!, `segundaFoto-${this.nombre?.value}-${this.dni?.value}`);
+
+      await primerUrl;
+      await segundaUrl;
+
+      var p : IPaciente = {
+        correo : this.correo?.value,
+        contrasenia: this.contrasenia?.value,
+        nombre: this.nombre?.value,
+        apellido: this.apellido?.value,
+        dni : this.dni?.value,
+        edad: this.edad?.value,
+        obraSocial: this.obraSocial?.value,
+        primerFoto : primerUrl,
+        segundaFoto: segundaUrl,
+      }
+
+      this.db.guardarPaciente(p);
+
+      this.credentials.reset();
+      this.ocultarSpinner();
     }
     else
     {
-      console.log(this.nombre?.value);
       this.mostrarError();
     }
   }
 
 
-  guardarEspecialista() : void
+  async guardarEspecialista() : Promise<void>
   {
+
+    var especialidades = this.inputsCreadosEspecialidades.map(input => input.value);
+    console.log(especialidades);
+
     if(this.credenciales.valid)
       {
-        console.log("hola");
+        this.mostrarSpinner();
+  
+        // const tercerUrl = this.storage.subir(this.primerImagen!,`Foto-${this.nombre?.value}-${this.dni?.value}`);
+  
+        // await tercerUrl;
+
+        var especialidades = this.inputsCreadosEspecialidades.map(input => input.value);
+  
+        // var e : IEspecialista = {
+        //   correo : this.correo?.value,
+        //   contrasenia: this.contrasenia?.value,
+        //   nombre: this.nombre?.value,
+        //   apellido: this.apellido?.value,
+        //   dni : this.dni?.value,
+        //   edad: this.edad?.value,
+        //   foto : tercerUrl,
+        // }
+        console.log(especialidades);
+        //this.db.guardarEspecialista(e);
+  
+        this.credentials.reset();
+        this.ocultarSpinner();
       }
       else
       {
         this.mostrarError();
       }
   }
+
 
   mostrarError() : void
   {
@@ -140,31 +203,57 @@ export class RegistroComponent {
 
   agregarInputEspecialidad() : void
   {
-    var div = document.getElementById('especialidad');
+    const nuevoInput = {
+      value: '',  
+      className: 'block w-full max-w-screen-sm rounded-md border-0 mt-2 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6',
+      placeholder: 'Ingrese una especialidad'
+    };
 
-    var input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'block w-full max-w-screen-sm rounded-md border-0 mt-2 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6';
-    input.placeholder = '';
-
-    div?.appendChild(input);
+    this.inputsCreadosEspecialidades.push(nuevoInput);
   }
 
-  onFileSelected(event: Event) : void
+  onFileSelected(event: any, select : string) : void
   {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0)   
-    {
-      this.primerFotoCargada = true;
-    }
+    const file = event.target.files[0];
+      const imagen = new Blob([file], {
+        type: file.type
+      });
+
+      if(select == 'primera')
+      {
+        this.primerFotoCargada = true;
+        this.primerImagen = imagen;
+      }
+      else if(select == 'segunda')
+      {
+        this.segundoFotoCargada = true;
+        this.segundaImagen = imagen;
+      }
+    
   }
 
-  segundaFoto(event: Event) : void
+  async mostrarSpinner() : Promise<void>
   {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0)   
-    {
-      this.segundoFotoCargada = true;
-    }
+    this.spinner = true;
+  }
+
+  async ocultarSpinner() : Promise<void>
+  {
+    this.spinner = false;
+  }
+
+  segundaFoto(event: any) : void
+  {
+    const file = event.target.files[0];
+    const imagen = new Blob([file], {
+      type: file.type
+    });
+
+    this.segundaImagen = imagen;
+
+    this.segundoFotoCargada = true;
+
+    console.log(this.segundoFotoCargada);
+    
   }
 }             

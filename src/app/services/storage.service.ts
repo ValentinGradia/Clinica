@@ -9,22 +9,15 @@ export class StorageService {
 
   constructor(private firestore: Firestore, private storage: Storage) { }
 
-  async subir(imagen: Blob)
+  async subir(imagen: Blob, nombreImagen: string) : Promise<string>
   {
-    const col = collection(this.firestore, '');
 
-    const documento = doc(col);
-    let empleado = {id: documento.id, nombre:'Agus', imagen}
-
-
-    const storageRef = ref(this.storage, "imagenes/" + "imagen.jpg");
+    const storageRef = ref(this.storage, "imagenes/" + `${nombreImagen}.jpg`);
 
     await uploadBytes(storageRef, imagen);
 
     const url = await getDownloadURL(storageRef);
 
-    // empleado.imagen = url
-
-    // setDoc(documento, {...empleado})
+    return url;
   }
 }

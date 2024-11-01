@@ -39,7 +39,7 @@ export class UsuariosComponent implements OnInit {
 
   aprobar(especialista: IEspecialista) : void
   {
-    this.usuarios.aprobarEspecialista(especialista.id);
+    this.usuarios.aprobarEspecialista(especialista.id!);
     Swal.fire({
       position: "center",
       icon: "success",

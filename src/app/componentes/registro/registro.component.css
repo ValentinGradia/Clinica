@@ -5,3 +5,16 @@
     width: 0;
     height: 0;
 }
+
+.spinner-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(152, 152, 152, 0.8); 
+    z-index: 9999; 
+  }
