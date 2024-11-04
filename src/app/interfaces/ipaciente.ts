@@ -7,6 +7,6 @@ export interface IPaciente {
 	obraSocial : string,
 	correo: string,
 	contrasenia : string,
-	primerFoto : Promise<string>,
-	segundaFoto: Promise<string>
+	primerFoto : string,
+	segundaFoto: string
 }

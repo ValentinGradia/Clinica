@@ -9,5 +9,22 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(), provideFirebaseApp(() => initializeApp({"projectId":"clinica-17f36","appId":"1:1096778417113:web:1511f9027a9ec6f701cfc8","storageBucket":"clinica-17f36.appspot.com","apiKey":"AIzaSyAmwkdoWaw8XJwDG5TAoobafcvD8T5_L1A","authDomain":"clinica-17f36.firebaseapp.com","messagingSenderId":"1096778417113"})), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideStorage(() => getStorage())]
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideClientHydration(),
+    provideFirebaseApp(() =>
+      initializeApp({
+        projectId: 'clinica-17f36',
+        appId: '1:1096778417113:web:1511f9027a9ec6f701cfc8',
+        storageBucket: 'clinica-17f36.appspot.com',
+        apiKey: 'AIzaSyAmwkdoWaw8XJwDG5TAoobafcvD8T5_L1A',
+        authDomain: 'clinica-17f36.firebaseapp.com',
+        messagingSenderId: '1096778417113',
+      })
+    ),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
+  ],
 };

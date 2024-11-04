@@ -7,6 +7,6 @@ export interface IEspecialista {
 	especialidad : string[]
 	correo: string
 	contrasenia : string,
-	aprobado : boolean
-	foto : Promise<string>
+	estado: string,
+	foto : string
 }

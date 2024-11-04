@@ -48,7 +48,7 @@ export class LoginComponent {
       var userCredential = await this.auth.loguearUsuario(this.correo,this.contrasenia);
       if(userCredential == null)
       {
-        throw new Error("Correo/Contraseña incorrecta");
+        throw new Error("Usuario no existente");
       }
       await this.auth.setearCorreo(this.correo);
       this.spinner = false;
@@ -62,6 +62,7 @@ export class LoginComponent {
     }
     catch(error : any)
     {
+      this.spinner = false;
       Swal.fire({
         icon: "error",
         title: "Error",

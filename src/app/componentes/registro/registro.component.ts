@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, Input } from '@angular/core';
-import { FormBuilder, FormsModule, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, FormGroup, Validators, ReactiveFormsModule,FormControl } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonEngine } from '@angular/ssr';
 import Swal from 'sweetalert2';
@@ -22,12 +22,13 @@ export class RegistroComponent {
 
   primerFotoCargada : boolean = false;
   segundoFotoCargada : boolean = false;
+  tercerFotoCargada : boolean = false;
 
   primerImagen : Blob | null = null;
   segundaImagen: Blob | null = null;
   tercerImagen: Blob | null = null;
 
-  inputsCreadosEspecialidades: { value: string; className: string; placeholder: string }[] = [];
+  inputsCreadosEspecialidades: { control: FormControl; className: string; placeholder: string }[] = [];
 
   spinner: boolean = false;
 
@@ -87,31 +88,31 @@ export class RegistroComponent {
   }
 
   get Ecorreo(){
-    return this.credentials.get('Ecorreo');
+    return this.credenciales.get('Ecorreo');
   }
 
   get Econtrasenia(){
-    return this.credentials.get('Econtrasenia');
+    return this.credenciales.get('Econtrasenia');
   }
 
   get Enombre(){
-    return this.credentials.get('Enombre');
+    return this.credenciales.get('Enombre');
   }
 
   get Eapellido(){
-    return this.credentials.get('Eapellido');
+    return this.credenciales.get('Eapellido');
   }
 
   get Eedad(){
-    return this.credentials.get('Eedad');
+    return this.credenciales.get('Eedad');
   }
 
   get Edni(){
-    return this.credentials.get('Edni');
+    return this.credenciales.get('Edni');
   }
 
   get Eespecialidad(){
-    return this.credentials.get('Eespecialidad');
+    return this.credenciales.get('Eespecialidad');
   }
 
 
@@ -123,11 +124,8 @@ export class RegistroComponent {
 
       this.auth.registrarUsuario(this.correo?.value,this.contrasenia?.value);
 
-      const primerUrl = this.storage.subir(this.primerImagen!,`primerFoto-${this.nombre?.value}-${this.dni?.value}`);
-      const segundaUrl = this.storage.subir(this.segundaImagen!, `segundaFoto-${this.nombre?.value}-${this.dni?.value}`);
-
-      await primerUrl;
-      await segundaUrl;
+      const primerUrl = await this.storage.subir(this.primerImagen!,`primerFoto-${this.nombre?.value}-${this.dni?.value}`);
+      const segundaUrl = await this.storage.subir(this.segundaImagen!, `segundaFoto-${this.nombre?.value}-${this.dni?.value}`);
 
       var p : IPaciente = {
         correo : this.correo?.value,
@@ -155,33 +153,33 @@ export class RegistroComponent {
 
   async guardarEspecialista() : Promise<void>
   {
-
-    var especialidades = this.inputsCreadosEspecialidades.map(input => input.value);
-    console.log(especialidades);
-
     if(this.credenciales.valid)
       {
+
+
         this.mostrarSpinner();
   
-        // const tercerUrl = this.storage.subir(this.primerImagen!,`Foto-${this.nombre?.value}-${this.dni?.value}`);
+        const tercerUrl =  await this.storage.subir(this.primerImagen!,`Foto-${this.Enombre?.value}-${this.Edni?.value}`);
   
-        // await tercerUrl;
 
-        var especialidades = this.inputsCreadosEspecialidades.map(input => input.value);
+        var especialidades = this.inputsCreadosEspecialidades.map(input => input.control.value);
+        especialidades.push(this.Eespecialidad?.value);
   
-        // var e : IEspecialista = {
-        //   correo : this.correo?.value,
-        //   contrasenia: this.contrasenia?.value,
-        //   nombre: this.nombre?.value,
-        //   apellido: this.apellido?.value,
-        //   dni : this.dni?.value,
-        //   edad: this.edad?.value,
-        //   foto : tercerUrl,
-        // }
-        console.log(especialidades);
-        //this.db.guardarEspecialista(e);
+        var e : IEspecialista = {
+          correo : this.Ecorreo?.value,
+          contrasenia: this.Econtrasenia?.value,
+          nombre: this.Enombre?.value,
+          apellido: this.Eapellido?.value,
+          dni : this.Edni?.value,
+          edad: this.Eedad?.value,
+          estado : "pendiente",
+          especialidad : especialidades,
+          foto : tercerUrl
+        }
+
+        this.db.guardarEspecialista(e);
   
-        this.credentials.reset();
+        this.credenciales.reset();
         this.ocultarSpinner();
       }
       else
@@ -203,8 +201,14 @@ export class RegistroComponent {
 
   agregarInputEspecialidad() : void
   {
+
+    const nuevoControl = new FormControl('');
+
+    this.credentials.addControl(`Eespecialidad${this.inputsCreadosEspecialidades.length}`, nuevoControl);
+
+
     const nuevoInput = {
-      value: '',  
+      control: nuevoControl,
       className: 'block w-full max-w-screen-sm rounded-md border-0 mt-2 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6',
       placeholder: 'Ingrese una especialidad'
     };
@@ -228,6 +232,11 @@ export class RegistroComponent {
       {
         this.segundoFotoCargada = true;
         this.segundaImagen = imagen;
+      }
+      else
+      {
+        this.tercerFotoCargada = true;
+        this.tercerImagen = imagen;
       }
     
   }

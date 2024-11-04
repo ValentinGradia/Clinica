@@ -16,7 +16,7 @@ export class UsuarioService {
   {
     const col = collection(this.firestore, 'Especialistas');
     addDoc(col,{nombre: e.nombre, apellido:e.apellido, edad:e.edad, dni:e.dni, especialidad:e.especialidad,
-      correo:e.correo, contrasenia:e.contrasenia, aprobado: false //aca iria la imagen
+      correo:e.correo, contrasenia:e.contrasenia, estado: e.estado
     });
   }
 
@@ -24,7 +24,7 @@ export class UsuarioService {
   {
     const col = collection(this.firestore, 'Pacientes');
     addDoc(col,{nombre: p.nombre, apellido:p.apellido, edad:p.edad, dni:p.dni, obraSocial:p.obraSocial,
-      correo:p.correo, contrasenia:p.contrasenia, //aca iria la imagen
+      correo:p.correo, contrasenia:p.contrasenia,primerFoto: p.primerFoto, segundaFoto: p.segundaFoto 
     });
   }
 
@@ -32,17 +32,15 @@ export class UsuarioService {
   {
     const col = collection(this.firestore, 'Administradores');
     addDoc(col,{nombre: a.nombre, apellido:a.apellido, edad:a.edad, dni:a.dni,
-      correo:a.correo, contrasenia:a.contrasenia //aca iria la imagen
+      correo:a.correo, contrasenia:a.contrasenia, foto: a.foto
     });
   }
 
-  traerEspecialistas(noAprobados: boolean) : Observable<IEspecialista[]>
+  traerEspecialistas() : Observable<IEspecialista[]>
   {
     const col = collection(this.firestore, 'Especialistas');
 
-    const especialistas = noAprobados ? query(col,where('aprobado','==',false)) : col;
-
-    return collectionData(especialistas, { idField: 'id' }) as Observable<IEspecialista[]>
+    return collectionData(col, { idField: 'id' }) as Observable<IEspecialista[]>
   }
 
   //Con este metodo lo que hacemos es buscar el correo para ver de que tipo de usuario pertenece (PARA LA AUTENTICACION)
@@ -82,8 +80,15 @@ export class UsuarioService {
     const col = collection(this.firestore, 'Especialistas');
     const documento = doc(col,id)
     updateDoc(documento,{
-      aprobado: true
+      estado: "aprobado"
     });
+  }
+
+  actualizarEspecialista(especialista: IEspecialista): void
+  {
+    const col = collection(this.firestore, 'Especialistas');
+    const documento = doc(col,especialista.id);
+    updateDoc(documento,{...especialista});
   }
 
   

@@ -1,35 +1,49 @@
 <div class="grid grid-cols-2 w-full">
-	<div class="mt-10 flex flex-col  ml-20">
-		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Nombre</label>
-		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm ">
-		  <input type="text" name="nombre" id="nombre"  class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+	<form [formGroup]="credenciales">
+		<div class="mt-10 flex flex-col ml-20">
+			<label for="nombre" class="block text-lg mt-2 font-medium text-gray-900">Nombre</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				<input type="text" name="nombre" id="nombre" formControlName="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+		
+			<label for="apellido" class="block text-lg mt-2 font-medium text-gray-900">Apellido</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				<input type="text" name="apellido" id="apellido" formControlName="apellido" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+		
+			<label for="edad" class="block text-lg mt-2 font-medium text-gray-900">Edad</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				<input type="text" name="edad" id="edad" formControlName="edad" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+		
+			<label for="dni" class="block text-lg mt-2 font-medium text-gray-900">DNI</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				<input type="text" name="dni" id="dni" formControlName="dni" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+		
+			<label for="correo" class="block text-lg mt-2 font-medium text-gray-900">Correo</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				<input type="text" name="correo" id="correo" formControlName="correo" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+		
+			<label for="contrasenia" class="block text-lg mt-2 font-medium text-gray-900">Contraseña</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+				<input type="text" name="contrasenia" id="contrasenia" formControlName="contrasenia" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+		
+			<div class="mt-5 max-w-screen-sm">
+				@if (!fotoCargada) {
+					<i id="segundaFoto" class="ml-20 fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
+				}
+				@else {
+					<i id="segundaFoto" class="ml-20 fa-solid fa-check fa-2xl" ></i>
+				}
+				<input type="file" #fileInput class="file-input-hidden" file (change)="cargarFoto($event)">
+			</div>
+		
+			<button type="button" (click)="guardarAdmin()" class="btn btn-secondary btn-lg mt-10 w-96">Guardar admin</button>
 		</div>
-		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Apellido</label>
-		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-		</div>
-		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Edad</label>
-		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-		</div>
-		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">DNI</label>
-		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-		</div>
-		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Mail</label>
-		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-		</div>
-		<label for="price" class="block text-lg mt-2 font-medium text-gray-900">Contraseña</label>
-		<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
-		  <input type="text" name="nombre" id="nombre" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
-		</div>
-		<div class="mt-5 max-w-screen-sm">
-			<i id="segundaFoto" class="ml-20 fa-solid fa-plus fa-2xl" (click)="fileInput.click()"></i>
-			<input type="file" #fileInput class="file-input-hidden" file (change)="cargarFoto($event)">
-		</div>
-		<button type="button" class="btn btn-secondary btn-lg mt-10 w-96">Guardar admin</button>
-	  </div>
+	</form>
 	  <div class="p-5 text-center h-full">
 		<h1>Especialistas </h1>
 		<div class="bg-slate-300 h-full mt-4" style="max-height: 500px;overflow-y: scroll;">
@@ -38,7 +52,8 @@
 					@for (especialista of especialistas; track $index) {
 						<tr>
 							<td class="text-left"><p>{{especialista.nombre}} {{especialista.apellido}}</p></td>
-							<td class="pt-0"><button (click)="aprobar(especialista)" type="button" class="btn btn-secondary">Aprobar especialista</button></td>
+							<td class="pt-0"><button style="background-color: rgb(22, 143, 22);" (click)="aprobar(especialista)" type="button" class="btn btn-secondary">Aprobar</button></td>
+							<td class="pt-0"><button style="background-color: rgb(209, 21, 21);" (click)="rechazar(especialista)" type="button" class="btn btn-secondary">Rechazar</button></td>
 						</tr>
 					}
 				</tbody>
