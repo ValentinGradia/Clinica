@@ -1,10 +1,57 @@
-<div class="w-full h-full flex justify-center p-5">
-	<div class="card w-2/6">
-		<h5 class="card-header">Featured</h5>
-		<div class="card-body">
-		  <h5 class="card-title">Special title treatment</h5>
-		  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-		  <a href="#" class="btn btn-danger">Go somewhere</a>
-		</div>
-	  </div>
+<nav class="navbar bg-body-tertiary">
+  <div class="flex flex-row justify-center w-4/6 text-center pl-16">
+    <input
+      [(ngModel)]="valorFiltro"
+      class="form-control me-2"
+      type="search"
+      aria-label="Search"
+    />
+    <button
+      (click)="filtrarTurno()"
+      class="btn btn-outline-success ml-8"
+      type="submit"
+    >
+      Buscar
+    </button>
+    <button (click)="resetFiltro()" class="btn btn-danger ml-8" type="submit">
+      Resetear
+    </button>
+  </div>
+</nav>
+
+<div class="w-full h-full p-5">
+  <div class="grid grid-cols-2 gap-5 w-full">
+    @for (turno of turnos; track $index) {
+    <div class="card w-4/6">
+      <h5 class="card-header">
+        <i class="fa-solid fa-stethoscope fa-lg"></i>
+        {{ turno.especialidad }}
+      </h5>
+      <div class="card-body">
+        <h5 class="card-title">
+          <i class="fa-solid fa-user-doctor fa-lg"></i>
+          {{ turno.nombreEspecialista }} {{ turno.apellidoEspecialista }}
+        </h5>
+
+        <p class="card-text">{{ turno.fecha | date : "MMM dd  HH:mm" }}</p>
+        <div class="grid grid-cols-4 gap-2">
+		  @if (turno.resenia) {
+			<button href="#" class="btn btn-info">Ver reseña</button>
+		  }
+          @if(turno.estado == 'finalizado') { @if (turno.resenia) {
+          <button href="#" class="btn btn-warning">Completar encuesta</button>
+          } @else {<button href="#" class="btn btn-secondary">
+            Calificar atencion
+          </button>
+          } }
+		  @else { <button href="#" class="btn btn-danger">Cancelar</button>}
+        </div>
+      </div>
+    </div>
+    }
+  </div>
 </div>
+
+@if(mostrarSpinner) {
+<app-spinner></app-spinner>
+}

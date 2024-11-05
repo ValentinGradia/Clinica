@@ -8,12 +8,13 @@ import { FormBuilder, FormsModule, FormGroup, Validators, ReactiveFormsModule,Fo
 import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/storage.service';
 import { IAdmin } from '../../interfaces/iadmin';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [FormsModule, RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, RouterModule, CommonModule, ReactiveFormsModule, SpinnerComponent],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css'
 })
@@ -110,6 +111,13 @@ export class UsuariosComponent implements OnInit {
         }
   
         this.db.guardarAdmin(a);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Administrador guardado",
+          showConfirmButton: false,
+          timer: 1500
+        });
   
         this.credenciales.reset();
         this.mostrarSpinner = false;

@@ -4,6 +4,7 @@ import { Firestore, collection,addDoc,getDoc,getDocs,updateDoc, collectionData, 
 import { IAdmin } from '../interfaces/iadmin';
 import { IEspecialista } from '../interfaces/iespecialista';
 import { IPaciente } from '../interfaces/ipaciente';
+import { Colecciones } from '../enums/colecciones';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class UsuarioService {
 
   guardarEspecialista(e : IEspecialista) : void
   {
-    const col = collection(this.firestore, 'Especialistas');
+    const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
     addDoc(col,{nombre: e.nombre, apellido:e.apellido, edad:e.edad, dni:e.dni, especialidad:e.especialidad,
       correo:e.correo, contrasenia:e.contrasenia, estado: e.estado
     });
@@ -22,7 +23,7 @@ export class UsuarioService {
 
   guardarPaciente(p : IPaciente) : void
   {
-    const col = collection(this.firestore, 'Pacientes');
+    const col = collection(this.firestore, Colecciones.PACIENTES);
     addDoc(col,{nombre: p.nombre, apellido:p.apellido, edad:p.edad, dni:p.dni, obraSocial:p.obraSocial,
       correo:p.correo, contrasenia:p.contrasenia,primerFoto: p.primerFoto, segundaFoto: p.segundaFoto 
     });
@@ -30,7 +31,7 @@ export class UsuarioService {
 
   guardarAdmin(a : IAdmin) : void
   {
-    const col = collection(this.firestore, 'Administradores');
+    const col = collection(this.firestore, Colecciones.ADMINISTRADORES);
     addDoc(col,{nombre: a.nombre, apellido:a.apellido, edad:a.edad, dni:a.dni,
       correo:a.correo, contrasenia:a.contrasenia, foto: a.foto
     });
@@ -38,7 +39,7 @@ export class UsuarioService {
 
   traerEspecialistas() : Observable<IEspecialista[]>
   {
-    const col = collection(this.firestore, 'Especialistas');
+    const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
 
     return collectionData(col, { idField: 'id' }) as Observable<IEspecialista[]>
   }
@@ -46,7 +47,7 @@ export class UsuarioService {
   //Con este metodo lo que hacemos es buscar el correo para ver de que tipo de usuario pertenece (PARA LA AUTENTICACION)
   async buscarCorreo(correo : string) : Promise<string>
   {
-    var col = collection(this.firestore, 'Especialistas');
+    var col = collection(this.firestore, Colecciones.ESPECIALISTAS);
 
     var queryEspecialista = query(col,where('correo','==',correo));
 
@@ -58,7 +59,7 @@ export class UsuarioService {
     }
     else
     {
-      var col = collection(this.firestore, 'Pacientes');
+      var col = collection(this.firestore, Colecciones.PACIENTES);
 
       var pacienteQuery = query(col,where('correo','==',correo));
 
@@ -77,7 +78,7 @@ export class UsuarioService {
 
   aprobarEspecialista(id : string) : void
   {
-    const col = collection(this.firestore, 'Especialistas');
+    const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
     const documento = doc(col,id)
     updateDoc(documento,{
       estado: "aprobado"
@@ -86,7 +87,7 @@ export class UsuarioService {
 
   actualizarEspecialista(especialista: IEspecialista): void
   {
-    const col = collection(this.firestore, 'Especialistas');
+    const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
     const documento = doc(col,especialista.id);
     updateDoc(documento,{...especialista});
   }
@@ -95,7 +96,7 @@ export class UsuarioService {
 
   traerPacientes() : Observable<any>
   {
-    const col = collection(this.firestore, 'Pacientes');
+    const col = collection(this.firestore, Colecciones.PACIENTES);
     const obvervable = collectionData(col);
     
 
@@ -104,7 +105,7 @@ export class UsuarioService {
 
   traerAdmins() : Observable<any>
   {
-    const col = collection(this.firestore, 'Administradores');
+    const col = collection(this.firestore, Colecciones.ADMINISTRADORES);
     const obvervable = collectionData(col);
     
 
