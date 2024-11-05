@@ -5,109 +5,89 @@ import { IAdmin } from '../interfaces/iadmin';
 import { IEspecialista } from '../interfaces/iespecialista';
 import { IPaciente } from '../interfaces/ipaciente';
 import { Colecciones } from '../enums/colecciones';
+import { User } from '@angular/fire/auth';
+import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsuarioService {
+  constructor(private firestore: Firestore) {}
 
-  constructor(private firestore: Firestore) { }
-
-  guardarEspecialista(e : IEspecialista) : void
-  {
+  guardarEspecialista(e: IEspecialista): void {
     const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
-    addDoc(col,{nombre: e.nombre, apellido:e.apellido, edad:e.edad, dni:e.dni, especialidad:e.especialidad,
-      correo:e.correo, contrasenia:e.contrasenia, estado: e.estado
+    addDoc(col, {
+      nombre: e.nombre,
+      apellido: e.apellido,
+      edad: e.edad,
+      dni: e.dni,
+      especialidad: e.especialidad,
+      correo: e.correo,
+      contrasenia: e.contrasenia,
+      estado: e.estado,
     });
   }
 
-  guardarPaciente(p : IPaciente) : void
-  {
+  guardarPaciente(p: IPaciente): void {
     const col = collection(this.firestore, Colecciones.PACIENTES);
-    addDoc(col,{nombre: p.nombre, apellido:p.apellido, edad:p.edad, dni:p.dni, obraSocial:p.obraSocial,
-      correo:p.correo, contrasenia:p.contrasenia,primerFoto: p.primerFoto, segundaFoto: p.segundaFoto 
+    addDoc(col, {
+      nombre: p.nombre,
+      apellido: p.apellido,
+      edad: p.edad,
+      dni: p.dni,
+      obraSocial: p.obraSocial,
+      correo: p.correo,
+      contrasenia: p.contrasenia,
+      primerFoto: p.primerFoto,
+      segundaFoto: p.segundaFoto,
     });
   }
 
-  guardarAdmin(a : IAdmin) : void
-  {
+  guardarAdmin(a: IAdmin): void {
     const col = collection(this.firestore, Colecciones.ADMINISTRADORES);
-    addDoc(col,{nombre: a.nombre, apellido:a.apellido, edad:a.edad, dni:a.dni,
-      correo:a.correo, contrasenia:a.contrasenia, foto: a.foto
+    addDoc(col, {
+      nombre: a.nombre,
+      apellido: a.apellido,
+      edad: a.edad,
+      dni: a.dni,
+      correo: a.correo,
+      contrasenia: a.contrasenia,
+      foto: a.foto,
     });
   }
 
-  traerEspecialistas() : Observable<IEspecialista[]>
-  {
+  traerEspecialistas(): Observable<IEspecialista[]> {
     const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
 
-    return collectionData(col, { idField: 'id' }) as Observable<IEspecialista[]>
+    return collectionData(col, { idField: 'id' }) as Observable<
+      IEspecialista[]
+    >;
   }
 
-  //Con este metodo lo que hacemos es buscar el correo para ver de que tipo de usuario pertenece (PARA LA AUTENTICACION)
-  async buscarCorreo(correo : string) : Promise<string>
-  {
-    var col = collection(this.firestore, Colecciones.ESPECIALISTAS);
-
-    var queryEspecialista = query(col,where('correo','==',correo));
-
-    var especialista = await getDocs(queryEspecialista);
-
-    if(!especialista.empty)
-    {
-      return 'Especialista'
-    }
-    else
-    {
-      var col = collection(this.firestore, Colecciones.PACIENTES);
-
-      var pacienteQuery = query(col,where('correo','==',correo));
-
-      var paciente = await getDocs(pacienteQuery);
-
-      if(!paciente.empty)
-      {
-        return 'Paciente';
-      }
-      else{
-        return 'Admin';
-      }
-    }
-
-  }
-
-  aprobarEspecialista(id : string) : void
-  {
+  aprobarEspecialista(id: string): void {
     const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
-    const documento = doc(col,id)
-    updateDoc(documento,{
-      estado: "aprobado"
+    const documento = doc(col, id);
+    updateDoc(documento, {
+      estado: 'aprobado',
     });
   }
 
-  actualizarEspecialista(especialista: IEspecialista): void
-  {
+  actualizarEspecialista(especialista: IEspecialista): void {
     const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
-    const documento = doc(col,especialista.id);
-    updateDoc(documento,{...especialista});
+    const documento = doc(col, especialista.id);
+    updateDoc(documento, { ...especialista });
   }
 
-  
-
-  traerPacientes() : Observable<any>
-  {
+  traerPacientes(): Observable<any> {
     const col = collection(this.firestore, Colecciones.PACIENTES);
     const obvervable = collectionData(col);
-    
 
     return obvervable; //hacer el subsrcribe desde el componente
   }
 
-  traerAdmins() : Observable<any>
-  {
+  traerAdmins(): Observable<any> {
     const col = collection(this.firestore, Colecciones.ADMINISTRADORES);
     const obvervable = collectionData(col);
-    
 
     return obvervable; //hacer el subsrcribe desde el componente
   }

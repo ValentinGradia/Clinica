@@ -7,6 +7,7 @@ import { UsuariosComponent } from './componentes/usuarios/usuarios.component';
 import { usuarioGuard } from './guards/usuario.guard';
 import { Component } from '@angular/core';
 import { TurnosComponent } from './componentes/turnos/turnos.component';
+import { PerfilComponent } from './componentes/perfil/perfil.component';
 
 export const routes: Routes = [
 	{
@@ -28,11 +29,15 @@ export const routes: Routes = [
 	},
 	{
 		path : 'usuarios',
-		component : UsuariosComponent,
+		loadComponent : () => import('./componentes/usuarios/usuarios.component').then(m => m.UsuariosComponent),
 		canActivate : [usuarioGuard]
 	},
 	{
 		path : 'turnos',
 		component : TurnosComponent
+	},
+	{
+		path : 'perfil',
+		component: PerfilComponent
 	}
 ];

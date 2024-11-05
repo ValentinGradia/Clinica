@@ -159,7 +159,7 @@ export class RegistroComponent {
 
         this.mostrarSpinner();
   
-        const tercerUrl =  await this.storage.subir(this.primerImagen!,`Foto-${this.Enombre?.value}-${this.Edni?.value}`);
+        const tercerUrl =  await this.storage.subir(this.tercerImagen!,`Foto-${this.Enombre?.value}-${this.Edni?.value}`);
   
 
         var especialidades = this.inputsCreadosEspecialidades.map(input => input.control.value);

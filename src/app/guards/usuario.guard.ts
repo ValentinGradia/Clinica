@@ -9,7 +9,7 @@ export const usuarioGuard: CanActivateFn = (route, state) => {
   var auth = inject(AuthService);
 
 
-  if(auth.tipoUsuario.getValue() !== 'Admin')
+  if(auth.tipoUsuario !== 'Administrador')
   {
     Swal.fire({
       position: "center",

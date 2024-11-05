@@ -1,5 +1,5 @@
-<nav class="navbar bg-body-tertiary">
-  <div class="flex flex-row justify-center w-4/6 text-center pl-16">
+<nav class="navbar bg-body-tertiary fixed">
+  <div class="flex flex-row justify-center w-4/6 text-center pl-16" >
     <input
       [(ngModel)]="valorFiltro"
       class="form-control me-2"
@@ -45,8 +45,14 @@
           </button>
           } }
 		  @else { 
-			@if (turno.estado !== 'cancelado') {
-				<button (click)="cancearTurno(turno)" href="#" class="btn btn-danger">Cancelar</button>}
+          @if (turno.estado == 'cancelado') {
+            <div class="col-span-3">
+              <p class="card-text">Turno cancelado : {{turno.motivoCancelacion}}</p>
+            </div>
+          }
+          @else{
+            <button (click)="cancearTurno(turno)" href="#" class="btn btn-danger">Cancelar</button>
+          }
 			}
         </div>
       </div>
