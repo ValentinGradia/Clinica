@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Timestamp } from '@angular/fire/firestore';
 import { SpinnerComponent } from '../spinner/spinner.component';
+import Swal from 'sweetalert2';
+import { EstadoTurno } from '../../enums/estadoTurno';
 
 @Component({
   selector: 'app-turnos',
@@ -31,7 +33,7 @@ export class TurnosComponent implements OnInit {
     const resp = (await this.turnosService.traerTurnosPaciente('8jAwImsYn9Lppx462e0R'))
 
     resp.forEach(turno => {
-      this.turnos.push(turno.data() as ITurno);
+      this.turnos.push(turno as ITurno);
     });
 
     this.turnos = this.turnos.map(turno => {
@@ -59,6 +61,30 @@ export class TurnosComponent implements OnInit {
   {
     this.valorFiltro = '';
     this.turnos = this.todosLosTurnos;
+  }
+
+  async cancearTurno(turno : ITurno)
+  {
+    var motivo;
+    await Swal.fire({
+      position: "center",
+      icon: "warning",
+      title: "¿Por que desea cancelar el turno?",
+      input : "text",
+      inputAttributes: {
+        autocapitalize: "off"
+      },
+      showConfirmButton: true,
+    }).then(result => {
+      if(result.isConfirmed)
+      {
+        motivo = result.value;
+      }
+    });
+
+    turno.motivoCancelacion = motivo
+    turno.estado = EstadoTurno.CANCELADO;
+    this.turnosService.actualizarTurno({...turno})
   }
 
 }

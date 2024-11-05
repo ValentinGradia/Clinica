@@ -44,7 +44,10 @@
             Calificar atencion
           </button>
           } }
-		  @else { <button href="#" class="btn btn-danger">Cancelar</button>}
+		  @else { 
+			@if (turno.estado !== 'cancelado') {
+				<button (click)="cancearTurno(turno)" href="#" class="btn btn-danger">Cancelar</button>}
+			}
         </div>
       </div>
     </div>

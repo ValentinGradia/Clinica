@@ -7,7 +7,8 @@ export interface ITurno
 	idEspecialista: string,
 	especialidad: string,
 	estado: EstadoTurno,
-	resenia?: string
+	resenia?: string,
+	motivoCancelacion ?: string,
 	nombreEspecialista: string,
 	apellidoEspecialista: string,
 	fecha: Date
