@@ -23,6 +23,7 @@ export class SolicitarTurnoComponent implements OnInit {
   mostrarSpinner = false;
   especialistas : IEspecialista[] = [];
   especialistasFiltrados : IEspecialista[] = [];
+  diasDisponibles : Array<any> = [];
 
   especialidadSeleccionada : string | null = null;
   especialistaSeleccionado : IEspecialista | null = null;
@@ -36,9 +37,27 @@ export class SolicitarTurnoComponent implements OnInit {
     data.forEach(especialista => {
       this.especialidades.push(...especialista.especialidad);
     });
-    
+
+    this.setearDias();
+
     this.mostrarSpinner = false;
   }
+
+  setearDias() : void
+  {
+    const fechaActual = new Date();
+    const fechaLimite = new Date();
+    fechaLimite.setDate(fechaActual.getDate() + 15);
+
+    var fechaTemporal = new Date(fechaActual);
+    while(fechaTemporal <= fechaLimite)
+    {
+
+      this.diasDisponibles.push(new Date(fechaTemporal));
+      fechaTemporal.setDate(fechaTemporal.getDate() + 1);
+    }
+  }
+
 
   seleccionarEspecialidad(event: Event) : void
   {
@@ -48,10 +67,6 @@ export class SolicitarTurnoComponent implements OnInit {
     this.filtrarEspecialistas(this.especialidadSeleccionada);
   }
 
-  seleccionarEspecialista(event: Event) : void
-  {
-    
-  }
 
   filtrarEspecialistas(especialidad : string)
   {
@@ -68,6 +83,41 @@ export class SolicitarTurnoComponent implements OnInit {
         this.especialistasFiltrados = this.especialistasFiltrados.filter(especialista => especialista !== e);
       }
     });
+  }
+
+  obtenerHorario(dia: Date, index: number): string {
+    const horarios = this.filtrarFecha(dia);
+    return horarios[index] || '';
+  }
+
+  getMaxHorarios(): number[] {
+    type DiasSemana = 'lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes';
+
+    const maxHorarios = Math.max(
+      ...(['lunes', 'martes', 'miercoles', 'jueves', 'viernes'] as DiasSemana[]).map((dia) =>
+        (this.especialistaSeleccionado![dia] || []).length
+      ));
+
+    return Array(maxHorarios).fill(0).map((_, i) => i); 
+  }
+
+  filtrarFecha(fecha: Date): string[] {
+    const diaSemana = fecha.getDay();
+
+    switch (diaSemana) {
+      case 1:
+        return this.especialistaSeleccionado?.lunes ?? [];
+      case 2:
+        return this.especialistaSeleccionado?.martes ?? [];
+      case 3:
+        return this.especialistaSeleccionado?.miercoles ?? [];
+      case 4:
+        return this.especialistaSeleccionado?.jueves ?? [];
+      case 5:
+        return this.especialistaSeleccionado?.viernes ?? [];
+      default:
+        return [];
+    }
   }
 
 }

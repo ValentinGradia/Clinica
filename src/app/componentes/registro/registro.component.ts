@@ -24,6 +24,8 @@ export class RegistroComponent {
   segundoFotoCargada : boolean = false;
   tercerFotoCargada : boolean = false;
 
+  usuarioSeleccionado : 'Paciente' | 'Especialista' | null = null;
+
   primerImagen : Blob | null = null;
   segundaImagen: Blob | null = null;
   tercerImagen: Blob | null = null;
@@ -265,7 +267,16 @@ export class RegistroComponent {
 
     this.segundoFotoCargada = true;
 
-    console.log(this.segundoFotoCargada);
     
+  }
+
+  cargarEspecialista() : void
+  {
+    this.usuarioSeleccionado = 'Especialista'
+  }
+
+  cargarPaciente() : void
+  {
+    this.usuarioSeleccionado = 'Paciente';
   }
 }             

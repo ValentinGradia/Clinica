@@ -7,11 +7,12 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:Clinica": "node dist/clinica/server/server.mjs"
+    "serve:ssr:Clinica": "node dist/clinica/server/server.mjs",
+    "deploy": "ng build && firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^18.2.0",
+    "@angular/animations": "^18.2.11",
     "@angular/common": "^18.2.9",
     "@angular/compiler": "^18.2.0",
     "@angular/core": "^18.2.0",

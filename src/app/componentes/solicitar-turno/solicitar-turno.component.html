@@ -12,14 +12,36 @@
 
 	  <div class="input-group mb-3 mt-5 h-14">
 		<label class="input-group-text" for="inputGroupSelect01">Especialistas</label>
-		<select (change)="seleccionarEspecialista($event)"  class="form-select" id="inputGroupSelect02">
+		<select [(ngModel)]="especialistaSeleccionado"  class="form-select" id="inputGroupSelect02">
 			<option value="" disabled selected>Elija un especialista</option>
 			@if (this.especialistasFiltrados) {
 				@for (e of especialistasFiltrados; track $index) {
-					<option>{{e.nombre}} {{e.apellido}}</option>
+					<option [ngValue]="e">{{e.nombre}} {{e.apellido}}</option>
 				}
 			}
 		</select>
+	  </div>
+	  <div  class="w-screen tabla">
+		<table class="schedule-table text-center">
+			<thead>
+				<tr>
+					@for (dia of diasDisponibles ; track $index) {
+						<th>{{dia | date:'shortDate'}}</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@if (especialistaSeleccionado) {
+					<tr *ngFor="let index of getMaxHorarios()">
+						<td *ngFor="let dia of diasDisponibles">
+						  <!-- Para cada día, obtener el horario correspondiente si existe en el índice actual -->
+						  {{ obtenerHorario(dia, index) }}
+						</td>
+					  </tr>
+					
+				}
+			</tbody>
+		  </table>
 	  </div>
 </div>
 
