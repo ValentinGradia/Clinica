@@ -8,6 +8,7 @@ import { usuarioGuard } from './guards/usuario.guard';
 import { Component } from '@angular/core';
 import { TurnosComponent } from './componentes/turnos/turnos.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
+import { logueadoGuard } from './guards/logueado.guard';
 
 export const routes: Routes = [
 	{
@@ -38,6 +39,7 @@ export const routes: Routes = [
 	},
 	{
 		path : 'perfil',
-		component: PerfilComponent
+		component: PerfilComponent,
+		// canActivate : [logueadoGuard]
 	}
 ];

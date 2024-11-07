@@ -1,10 +1,4 @@
-export interface IAdmin {
-	id ?: string,
-	nombre : string,
-	apellido : string,
-	edad : number,
-	dni : number,
-	correo: string,
-	contrasenia : string
-	foto : string
+import { Usuario } from "./iusuario"
+
+export interface IAdmin extends Usuario{
 }

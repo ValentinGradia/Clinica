@@ -1,12 +1,6 @@
-export interface IPaciente {
-	id ?: string,
-	nombre : string,
-	apellido : string,
-	edad : number,
-	dni : number,
+import { Usuario } from "./iusuario";
+
+export interface IPaciente extends Usuario{
 	obraSocial : string,
-	correo: string,
-	contrasenia : string,
-	primerFoto : string,
 	segundaFoto: string
 }

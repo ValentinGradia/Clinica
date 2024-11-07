@@ -8,6 +8,7 @@ import { IEspecialista } from '../interfaces/iespecialista';
 import { IPaciente } from '../interfaces/ipaciente';
 import { Colecciones } from '../enums/colecciones';
 import { Firestore, collection,addDoc,getDoc,getDocs,updateDoc, collectionData, doc, deleteDoc, where, query } from '@angular/fire/firestore';
+import { Usuario } from '../interfaces/iusuario';
 
 
 
@@ -20,7 +21,7 @@ export class AuthService {
   }
 
   correoUsuarioObservable = new BehaviorSubject<string | null>(null);//tipo de observable
-  usuarioActual : IEspecialista | IAdmin | IPaciente | null = null;
+  usuarioActual : Usuario | null = null;
   tipoUsuario : string = '';
   correoUsuario$ = this.correoUsuarioObservable.asObservable(); //para poder tener los metodos de un observable y exponerlo a otros componentes
 
@@ -40,14 +41,17 @@ export class AuthService {
 
   async buscarCorreo(correo: string): Promise<IEspecialista | IAdmin | IPaciente> {
     var col = collection(this.firestore, Colecciones.ESPECIALISTAS);
-
+    
+    //se deberia buscar con la contrasenia incluido pero dejemoslo asi 
     var queryEspecialista = query(col, where('correo', '==', correo));
 
     var especialista = await getDocs(queryEspecialista);
 
     if (!especialista.empty) {
       this.tipoUsuario = 'Especialista';
-      return especialista.docs[0].data() as IEspecialista;
+      var e =  especialista.docs[0].data() as IEspecialista;
+      e.id = especialista.docs[0].id; //le asigno el id del documento de firebase
+      return e;
     } else {
       var col = collection(this.firestore, Colecciones.PACIENTES);
 
@@ -57,7 +61,9 @@ export class AuthService {
 
       if (!paciente.empty) {
         this.tipoUsuario = 'Paciente';
-        return paciente.docs[0].data() as IPaciente;
+        var p = paciente.docs[0].data() as IPaciente;
+        p.id = paciente.docs[0].id; //le asigno el id del documento de firebase
+        return p;
       } else {
         var col = collection(this.firestore, Colecciones.ADMINISTRADORES);
 
@@ -66,7 +72,9 @@ export class AuthService {
         var admin = await getDocs(adminQuery);
 
         this.tipoUsuario = 'Administrador';
-        return admin.docs[0].data() as IAdmin;
+        var a = admin.docs[0].data() as IAdmin;
+        a.id = admin.docs[0].id; //le asigno el id del documento de firebase
+        return a;
       }
     }
   }

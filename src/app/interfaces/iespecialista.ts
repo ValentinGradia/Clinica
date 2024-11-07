@@ -1,12 +1,11 @@
-export interface IEspecialista {
-	id ?: string,
-	nombre : string,
-	apellido : string,
-	edad : number,
-	dni : number,
+import { Usuario } from "./iusuario"
+
+export interface IEspecialista extends Usuario {
 	especialidad : string[]
-	correo: string
-	contrasenia : string,
 	estado: string,
-	foto : string
+	lunes ?: string[],
+	martes ?: string[],
+	miercoles ?: string[],
+	jueves ?: string[],
+	viernes ?: string[]
 }

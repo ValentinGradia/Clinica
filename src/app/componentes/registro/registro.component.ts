@@ -135,13 +135,15 @@ export class RegistroComponent {
         dni : this.dni?.value,
         edad: this.edad?.value,
         obraSocial: this.obraSocial?.value,
-        primerFoto : primerUrl,
+        foto : primerUrl,
         segundaFoto: segundaUrl,
       }
 
       this.db.guardarPaciente(p);
 
       this.credentials.reset();
+      this.primerFotoCargada = false;
+      this.segundoFotoCargada = false;
       this.ocultarSpinner();
     }
     else
@@ -180,6 +182,7 @@ export class RegistroComponent {
         this.db.guardarEspecialista(e);
   
         this.credenciales.reset();
+        this.tercerFotoCargada = false;
         this.ocultarSpinner();
       }
       else

@@ -32,7 +32,6 @@ export class UsuariosComponent implements OnInit {
   protected credenciales !: FormGroup;
 
   constructor(private usuarios: UsuarioService, private fb: FormBuilder, private auth: AuthService){
-    
     this.credenciales = this.fb.group({
       correo: ['',[Validators.required, Validators.email]],
       contrasenia:['',[Validators.required, Validators.minLength(6)]],

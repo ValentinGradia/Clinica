@@ -8,6 +8,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import Swal from 'sweetalert2';
 import { EstadoTurno } from '../../enums/estadoTurno';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-turnos',
@@ -19,6 +20,7 @@ import { EstadoTurno } from '../../enums/estadoTurno';
 export class TurnosComponent implements OnInit {
 
   turnosService = inject(TurnosService);
+  auth = inject(AuthService);
   turnos : Array<ITurno> = [];
   todosLosTurnos : Array<ITurno> = [];
 
@@ -30,8 +32,7 @@ export class TurnosComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.mostrarSpinner = true;
-    const resp = (await this.turnosService.traerTurnosPaciente('8jAwImsYn9Lppx462e0R'))
-
+    const resp = (await this.turnosService.traerTurnosPaciente(this.auth.usuarioActual?.id!))
     resp.forEach(turno => {
       this.turnos.push(turno as ITurno);
     });

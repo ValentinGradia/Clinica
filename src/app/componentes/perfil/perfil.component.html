@@ -1,1 +1,59 @@
-<p>perfil works!</p>
+<div class="body">
+	<div class="container"> 
+	  <div class="image-section">
+			<img [src]="this.usuario.foto" alt="Profile Image">
+	  </div>
+	  <div class="info-section">
+		<h2>Datos Personales</h2>
+		<p><strong>Nombre:</strong> {{this.usuario.nombre}}</p>
+		<p><strong>Apellido:</strong> {{this.usuario.apellido}}</p>
+		<p><strong>Edad:</strong> {{this.usuario.edad}}</p>
+		<p><strong>Dni:</strong> {{this.usuario.dni}}</p>
+		<p><strong>Correo:</strong> {{this.usuario.correo}}</p>
+		@if(esEspecialista(this.usuario))
+		{
+			<p><strong>Especialidad: </strong>
+			@for (especialidad of this.usuario.especialidad; track $index) {
+				{{especialidad}}, 
+			}
+			</p>
+			
+		}
+		@else if (esPaciente(this.usuario)) {
+			<p><strong>Obra social: </strong> {{this.usuario.obraSocial}}</p>
+		}
+	  </div>
+	 </div>
+	 @if (esEspecialista(this.usuario)) {
+		<div class="table-container">
+			<h1 class="text-center">Mis horarios</h1>
+			<table class="schedule-table">
+			  <thead>
+				<tr>
+				  <th>Hora/Día</th>
+				  <th>Lunes</th>
+				  <th>Martes</th>
+				  <th>Miércoles</th>
+				  <th>Jueves</th>
+				  <th>Viernes</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				@for (hora of horarios; track $index) {
+					<tr >
+						<td>{{hora}}</td>
+						<td><input id="lunes-{{hora}}" type="checkbox" (click)="actualizarHorario('lunes', hora)"></td>
+						<td><input id="martes-{{hora}}"  type="checkbox" (click)="actualizarHorario('martes', hora)"></td>
+						<td><input id="miercoles-{{hora}}"  type="checkbox" (click)="actualizarHorario('miercoles', hora)"></td>
+						<td><input id="jueves-{{hora}}" type="checkbox" (click)="actualizarHorario('jueves', hora)"></td>
+						<td><input id="viernes-{{hora}}" type="checkbox" (click)="actualizarHorario('viernes', hora)"></td>
+					</tr>
+				}
+			  </tbody>
+			</table>
+			<div class="text-center mt-5">
+				<button (click)="guardarHorarios()" class="btn btn-secondary h-12 w-3/5">Guardar horarios</button>
+			</div>
+		  </div>
+	 }
+  </div>

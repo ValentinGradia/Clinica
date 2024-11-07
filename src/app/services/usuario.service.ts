@@ -5,8 +5,6 @@ import { IAdmin } from '../interfaces/iadmin';
 import { IEspecialista } from '../interfaces/iespecialista';
 import { IPaciente } from '../interfaces/ipaciente';
 import { Colecciones } from '../enums/colecciones';
-import { User } from '@angular/fire/auth';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +23,7 @@ export class UsuarioService {
       correo: e.correo,
       contrasenia: e.contrasenia,
       estado: e.estado,
+      foto: e.foto
     });
   }
 
@@ -38,7 +37,7 @@ export class UsuarioService {
       obraSocial: p.obraSocial,
       correo: p.correo,
       contrasenia: p.contrasenia,
-      primerFoto: p.primerFoto,
+      foto: p.foto,
       segundaFoto: p.segundaFoto,
     });
   }
