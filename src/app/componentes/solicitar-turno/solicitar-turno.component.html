@@ -1,1 +1,28 @@
-<p>solicitar-turno works!</p>
+<div class="container flex flex-col pt-5">
+	<h1 class="text-center text-cyan-400 text-6xl">Solicitar turno</h1>
+	<div class="input-group mb-3 mt-5 h-14">
+		<label class="input-group-text" for="inputGroupSelect01">Especialidades</label>
+		<select (change)="seleccionarEspecialidad($event)"  class="form-select" id="inputGroupSelect01">
+			<option value="" disabled selected>Elija una especialidad</option>
+			@for (especialidad of especialidades; track $index) {
+				<option>{{especialidad}}</option>
+			}
+		</select>
+	  </div>
+
+	  <div class="input-group mb-3 mt-5 h-14">
+		<label class="input-group-text" for="inputGroupSelect01">Especialistas</label>
+		<select (change)="seleccionarEspecialista($event)"  class="form-select" id="inputGroupSelect02">
+			<option value="" disabled selected>Elija un especialista</option>
+			@if (this.especialistasFiltrados) {
+				@for (e of especialistasFiltrados; track $index) {
+					<option>{{e.nombre}} {{e.apellido}}</option>
+				}
+			}
+		</select>
+	  </div>
+</div>
+
+@if (mostrarSpinner) {
+	<app-spinner></app-spinner>
+}

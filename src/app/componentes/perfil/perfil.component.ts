@@ -28,7 +28,6 @@ export class PerfilComponent implements AfterViewInit {
 
   horarios = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'];
 
-
   constructor(){
     this.usuario = this.auth.usuarioActual!;
   }
@@ -88,11 +87,11 @@ export class PerfilComponent implements AfterViewInit {
   actualizarHorario(dia: string, horario: string) : void
   {
     this.especialistaConHorariosAlmacenados = this.usuario as IEspecialista;
-    // this.especialistaConHorariosAlmacenados.lunes = this.especialistaConHorariosAlmacenados.lunes || [];
-    // this.especialistaConHorariosAlmacenados.martes = this.especialistaConHorariosAlmacenados.martes || [];
-    // this.especialistaConHorariosAlmacenados.miercoles = this.especialistaConHorariosAlmacenados.miercoles || [];
-    // this.especialistaConHorariosAlmacenados.jueves = this.especialistaConHorariosAlmacenados.jueves || [];
-    // this.especialistaConHorariosAlmacenados.viernes = this.especialistaConHorariosAlmacenados.viernes || [];
+    this.especialistaConHorariosAlmacenados.lunes = this.especialistaConHorariosAlmacenados.lunes || [];
+    this.especialistaConHorariosAlmacenados.martes = this.especialistaConHorariosAlmacenados.martes || [];
+    this.especialistaConHorariosAlmacenados.miercoles = this.especialistaConHorariosAlmacenados.miercoles || [];
+    this.especialistaConHorariosAlmacenados.jueves = this.especialistaConHorariosAlmacenados.jueves || [];
+    this.especialistaConHorariosAlmacenados.viernes = this.especialistaConHorariosAlmacenados.viernes || [];
 
     switch(dia)
     {

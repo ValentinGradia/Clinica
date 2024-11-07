@@ -1,0 +1,6 @@
+.container {
+	display: flex;
+	height: 100vh;
+	border-radius: 8px;
+	max-width: 500px;
+  }

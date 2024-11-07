@@ -40,6 +40,10 @@ export const routes: Routes = [
 	{
 		path : 'perfil',
 		component: PerfilComponent,
-		// canActivate : [logueadoGuard]
+		canActivate : [logueadoGuard]
+	},
+	{
+		path : 'solicitar-turno',
+		loadComponent : () => import('./componentes/solicitar-turno/solicitar-turno.component').then(m => m.SolicitarTurnoComponent),
 	}
 ];
