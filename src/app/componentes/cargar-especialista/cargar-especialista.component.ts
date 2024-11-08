@@ -34,7 +34,6 @@ export class CargarEspecialistaComponent {
 
   constructor(private fb: FormBuilder)
   {
-    
     this.credenciales = this.fb.group({
       Ecorreo: ['',[Validators.required, Validators.email]],
       Econtrasenia:['',[Validators.required, Validators.minLength(6)]],

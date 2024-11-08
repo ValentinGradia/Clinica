@@ -1,3 +1,5 @@
+@-webkit-keyframes scale-up-center{0%{-webkit-transform:scale(.5);transform:scale(.5)}100%{-webkit-transform:scale(1);transform:scale(1)}}@keyframes scale-up-center{0%{-webkit-transform:scale(.5);transform:scale(.5)}100%{-webkit-transform:scale(1);transform:scale(1)}}
+
 .spinner-container {
     position: fixed;
     top: 0;
@@ -10,3 +12,5 @@
     background-color: rgba(152, 152, 152, 0.8); 
     z-index: 9999; 
   }
+
+  .scale-up-center{-webkit-animation:scale-up-center .6s cubic-bezier(.39,.575,.565,1.000) both;animation:scale-up-center .6s cubic-bezier(.39,.575,.565,1.000) both}
