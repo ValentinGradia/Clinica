@@ -9,6 +9,9 @@ import { Component } from '@angular/core';
 import { TurnosComponent } from './componentes/turnos/turnos.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { logueadoGuard } from './guards/logueado.guard';
+import { turnoGuard } from './guards/turno.guard';
+import { solicitarTurnoGuard } from './guards/solicitar-turno.guard';
+import { animation } from '@angular/animations';
 
 export const routes: Routes = [
 	{
@@ -31,11 +34,13 @@ export const routes: Routes = [
 	{
 		path : 'usuarios',
 		loadComponent : () => import('./componentes/usuarios/usuarios.component').then(m => m.UsuariosComponent),
-		canActivate : [usuarioGuard]
+		canActivate : [usuarioGuard],
+		data : { animation : 'statusPage'}
 	},
 	{
 		path : 'turnos',
-		component : TurnosComponent
+		loadComponent : () => import('./componentes/turnos/turnos.component').then(m => m.TurnosComponent),
+		canActivate : [turnoGuard]
 	},
 	{
 		path : 'perfil',
@@ -45,5 +50,6 @@ export const routes: Routes = [
 	{
 		path : 'solicitar-turno',
 		loadComponent : () => import('./componentes/solicitar-turno/solicitar-turno.component').then(m => m.SolicitarTurnoComponent),
+		canActivate: [solicitarTurnoGuard]
 	}
 ];

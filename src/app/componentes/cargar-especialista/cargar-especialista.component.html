@@ -1,1 +1,62 @@
-<p>cargar-especialista works!</p>
+<div class="flex flex-col p-10 justify-center ml-52">
+	<h1 class="text-4xl font-bold text-gray-600">Especialistas</h1>
+	<div class="mt-10">
+		<form [formGroup]="credenciales">
+
+			<label for="Enombre" class="block text-lg mt-2 font-medium text-gray-900">Nombre</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+			  <input formControlName="Enombre" type="text" name="Enombre" id="Enombre"  class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+			<label for="Eapellido" class="block text-lg mt-2 font-medium text-gray-900">Apellido</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+			  <input formControlName="Eapellido" type="text" name="Eapellido" id="Eapellido" class="block w-full max-w-screen-sm rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+			<label for="Eedad" class="block text-lg mt-2 font-medium text-gray-900">Edad</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+			  <input formControlName="Eedad" type="text" name="Eedad" id="Eedad" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+			<label for="Edni" class="block text-lg mt-2 font-medium text-gray-900">DNI</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+			  <input formControlName="Edni" type="text" name="Edni" id="Edni" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+			<label for="Eespecialidad" class="block text-lg mt-2 font-medium text-gray-900">Especialidad</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm" id="especialidad">
+			  <input formControlName="Eespecialidad" type="text" name="Eespecialidad" id="Eespecialidad" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			  @for (elemento of inputsCreadosEspecialidades; track $index) {
+				<input type="text" [formControl]="elemento.control"  [className]="elemento.className" [formControl]="elemento.control" formControlName="Eespecialidad">
+			  }
+			</div>
+			<button type="button" (click)="agregarInputEspecialidad()" class="btn btn-secondary mt-2">Agregar especialidad</button>
+			<label for="Ecorreo" class="block text-lg mt-2 font-medium text-gray-900">Correo</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+			  <input formControlName="Ecorreo" type="text" name="Ecorreo" id="Ecorreo" class="block w-full  rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+			<label for="Econtrasenia" class="block text-lg mt-2 font-medium text-gray-900">Contraseña</label>
+			<div class="relative mt-2 rounded-md shadow-sm max-w-screen-sm">
+			  <input formControlName="Econtrasenia" type="text" name="Econtrasenia" id="Econtrasenia" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="">
+			</div>
+			<div class="mt-5 flex flex-row justify-evenly w-4/6">
+
+				@if (!tercerFotoCargada) {
+					<i id="segundaFoto" class="fa-solid fa-plus fa-2xl" (click)="fileInput3.click()"></i>
+				}
+				@else {<i id="segundaFoto" class="fa-solid fa-check fa-2xl"></i>}
+
+				<input type="file" #fileInput3 class="file-input-hidden" style="display: none;" file (change)="onFileSelected($event, 'tercera')">
+			</div>
+			<div class="flex justify-evenly w-3/6">
+				<button (click)="guardarEspecialista()" type="button" class="btn btn-secondary btn-lg mt-10">Guardar especialista</button>
+
+				<button (click)="volver()" type="button" class="btn btn-dark btn-lg mt-10">Volver</button>
+			</div>
+		</form>
+	  </div>
+</div>
+
+
+@if (spinner) {
+	<div class="spinner-container">
+		<div class="spinner-border m-5" style="height: 80px;width: 80px;" role="status">
+		</div>
+	</div>
+}
