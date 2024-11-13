@@ -18,31 +18,41 @@ export class LoginComponent {
 
   correo !: string;
   contrasenia !: string;
+  userMenuVisible : boolean = false;
+  users = [
+    {
+      contrasenia: "10101010",
+      correo: "marianfer@gmail.com",
+      foto : "https://firebasestorage.googleapis.com/v0/b/clinica-17f36.appspot.com/o/imagenes%2Ffoto-marian-3232.jpg?alt=media&token=b38d7b2e-4a8d-4b95-95ff-6a21044d4af1",
+    },
+    {
+      contrasenia: "777777",
+      correo: "raul@gmail.com",
+      foto : "https://firebasestorage.googleapis.com/v0/b/clinica-17f36.appspot.com/o/imagenes%2FFoto-Raul-905478.jpg?alt=media&token=70687b2d-1ba3-40fb-8668-2b80317354b5",
+    },
+    {
+      contrasenia: "222222",
+      correo: "especialista@especialista.com",
+      foto : "https://firebasestorage.googleapis.com/v0/b/clinica-17f36.appspot.com/o/imagenes%2FFoto-Eusebio-456789.jpg?alt=media&token=a3385fcd-064e-4b74-9334-9ae8806fd4e8",
+    },
+    {
+      contrasenia: "123456",
+      correo: "vg@gmail.com",
+      foto : "https://firebasestorage.googleapis.com/v0/b/clinica-17f36.appspot.com/o/imagenes%2FprimerFoto-Valentin-4709750.jpg?alt=media&token=c3d00647-bfb3-4755-8d67-acb070bbfea8",
+    },
+    {
+      contrasenia: "000000",
+      correo: "defe@gmail.com",
+      foto : "https://firebasestorage.googleapis.com/v0/b/clinica-17f36.appspot.com/o/imagenes%2FprimerFoto-Gustavo-46296402.jpg?alt=media&token=127c9ff5-bc5b-4833-84fc-155c235e7030",
+    }
+  ];
 
   spinner : boolean = false;
-
-  completarDatos(tipo : string) : void
-  {
-    if(tipo == 'usuario')
-    {
-      this.correo = 'paciente@paciente.com';
-      this.contrasenia = '111111';
-    }
-    else if(tipo == 'especialista')
-    {
-      this.correo = 'especialista@especialista.com';
-      this.contrasenia = '222222';
-    }
-    else{
-      this.correo = 'admin@admin.com';
-      this.contrasenia = '333333';
-    }
-  }
 
 
   async iniciar() : Promise<void>
   {
-    this.spinner = true;
+    this.spinner = !this.spinner;
     try
     {
       var userCredential = await this.auth.loguearUsuario(this.correo,this.contrasenia);
@@ -51,7 +61,7 @@ export class LoginComponent {
         throw new Error("Usuario no existente");
       }
       await this.auth.setearCorreo(this.correo);
-      this.spinner = false;
+      this.spinner = !this.spinner;
       Swal.fire({
         icon: "success",
         title: "Sesion iniciada con exito",
@@ -69,6 +79,18 @@ export class LoginComponent {
         text: error.message
       });
     }
+  }
+
+  mostrarMenu() : void
+  {
+    this.userMenuVisible = !this.userMenuVisible;
+  }
+
+  seleccionarUser(correo: string, contrasenia : string) :void
+  {
+
+    this.correo = correo;
+    this.contrasenia = contrasenia;
   }
 
 }

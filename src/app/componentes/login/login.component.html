@@ -1,37 +1,49 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<div class="flex  justify-center h-screen bg-gray-100">
-	<div class="w-full max-w-md bg-white rounded-lg shadow-lg mt-20 p-6" style="max-height: 500px;min-height: 400px;">
-		<h2 class="text-4xl font-semibold text-gray-800 text-center mb-6">Iniciar sesión</h2>
-		<div>
-		  <div class="mb-8">
-			<label for="email" class="block text-gray-700 text-xl">Correo electrónico</label>
-			<input [(ngModel)]="correo" type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="ejemplo@correo.com" required>
-		  </div>
-	
-		  <div class="mb-8">
-			<label for="password" class="block text-gray-700 text-xl">Contraseña</label>
-			<input [(ngModel)]="contrasenia" type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="••••••••" required>
-		  </div>
+<div class="flex justify-center items-center h-screen bg-gray-100 relative">
+  <!-- Login Form -->
+  <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-6" style="max-height: 500px; min-height: 400px;">
+    <h2 class="text-4xl font-semibold text-gray-800 text-center mb-6">Iniciar sesión</h2>
+    <div>
+      <!-- Email Input -->
+      <div class="mb-8">
+        <label for="email" class="block text-gray-700 text-xl">Correo electrónico</label>
+        <input [(ngModel)]="correo" type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="ejemplo@correo.com" required>
+      </div>
 
-		  <div class="mt-12 flex justify-evenly">
-			<i (click)="completarDatos('usuario')" class="fa-solid fa-user fa-2xl"></i>
-			<i (click)="completarDatos('especialista')" class="fa-solid fa-user-tie fa-2xl"></i>
-			<i (click)="completarDatos('admin')" class="fa-solid fa-user-gear fa-2xl"></i>
-		  </div>
-	
-		  <div class="flex items-center justify-center mt-10">
-			<button (click)="iniciar()" type="submit" class="w-4/5 bg-indigo-500 text-white font-semibold py-2 px-4 text-xl rounded-lg hover:bg-indigo-600 focus:outline-none">Entrar</button>
-		  </div>
+      <!-- Password Input -->
+      <div class="mb-8">
+        <label for="password" class="block text-gray-700 text-xl">Contraseña</label>
+        <input [(ngModel)]="contrasenia" type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="••••••••" required>
+      </div>
+
+      <!-- Login Button -->
+      <div class="flex items-center justify-center mt-10">
+        <button (click)="iniciar()" type="submit" class="w-4/5 bg-indigo-500 text-white font-semibold py-2 px-4 text-xl rounded-lg hover:bg-indigo-600 focus:outline-none">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="fixed bottom-4 left-4 flex flex-col items-center space-y-2">
+    <button (click)="mostrarMenu()" class="bg-indigo-500 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl hover:bg-indigo-600 focus:outline-none">
+      <i class="fa-solid fa-user"></i>
+    </button>
+
+	@if (userMenuVisible) {
+
+		<div class="flex flex-col items-center space-y-2 transition-all duration-300 transform scale-100">
+			@for (user of users; track $index) {
+				<div (click)="seleccionarUser(user.correo,user.contrasenia)" class="bg-white rounded-full shadow-lg w-16 h-16 flex items-center justify-center cursor-pointer transform hover:scale-110 transition-transform duration-150">
+				  <img [src]="user.foto" class="rounded-full w-12 h-12">
+				</div>
+			}
 		</div>
-	
+	}
+  </div>
+
+  @if (spinner) {
+	  <div class="spinner-container">
+		<div class="spinner-border m-5" style="height: 80px; width: 80px;" role="status"></div>
 	  </div>
+  }
 </div>
-
-
-@if (spinner) {
-	<div class="spinner-container">
-		<div class="spinner-border m-5" style="height: 80px;width: 80px;" role="status">
-		</div>
-	</div>
-}
