@@ -11,5 +11,5 @@ export interface ITurno
 	motivoCancelacion ?: string,
 	nombreEspecialista: string,
 	apellidoEspecialista: string,
-	fecha: Date
+	fecha: string
 }

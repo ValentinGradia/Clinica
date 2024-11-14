@@ -6,8 +6,6 @@
   }
 
 .tabla{
-	position: absolute;
-	left: 10%;
 	max-width: 80%;
 	overflow-x: auto;
 	top: 80%;

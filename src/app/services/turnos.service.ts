@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Firestore, collection,addDoc,getDoc,getDocs,updateDoc, collectionData, doc, deleteDoc, where, query } from '@angular/fire/firestore';
 import { Colecciones } from '../enums/colecciones';
 import { ITurno } from '../interfaces/iturno';
+import { EstadoTurno } from '../enums/estadoTurno';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,19 @@ export class TurnosService {
     const col = collection(this.firestore, Colecciones.TURNOS);
     const documento = doc(col,turno.id);
     updateDoc(documento,{...turno});
+  }
+
+  agregarTurno(turno : ITurno) : void
+  {
+    const col = collection(this.firestore, Colecciones.TURNOS);
+    addDoc(col, {
+      idPaciente: turno.idPaciente, 
+      idEspecialista: turno.idEspecialista,
+      especialidad: turno.especialidad,
+      estado: turno.estado,
+      nombreEspecialista: turno.nombreEspecialista,
+      apellidoEspecialista: turno.apellidoEspecialista,
+      fecha: turno.fecha
+    });
   }
 }

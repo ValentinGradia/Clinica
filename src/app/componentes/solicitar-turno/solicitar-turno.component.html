@@ -1,48 +1,60 @@
-<div class="container flex flex-col pt-5">
+<div class="flex flex-col pt-5">
 	<h1 class="text-center text-cyan-400 text-6xl">Solicitar turno</h1>
-	<div class="input-group mb-3 mt-5 h-14">
-		<label class="input-group-text" for="inputGroupSelect01">Especialidades</label>
-		<select (change)="seleccionarEspecialidad($event)"  class="form-select" id="inputGroupSelect01">
-			<option value="" disabled selected>Elija una especialidad</option>
-			@for (especialidad of especialidades; track $index) {
-				<option>{{especialidad}}</option>
-			}
-		</select>
-	  </div>
+	<div class="mt-5 p-5 flex flex-row space-x-10">
+		<button (click)="actualizar('-')" class="mt-16">
+			<i class="fa-solid fa-arrow-left fa-2xl"></i>
+		</button>
 
-	  <div class="input-group mb-3 mt-5 h-14">
-		<label class="input-group-text" for="inputGroupSelect01">Especialistas</label>
-		<select [(ngModel)]="especialistaSeleccionado"  class="form-select" id="inputGroupSelect02">
-			<option value="" disabled selected>Elija un especialista</option>
-			@if (this.especialistasFiltrados) {
-				@for (e of especialistasFiltrados; track $index) {
-					<option [ngValue]="e">{{e.nombre}} {{e.apellido}}</option>
-				}
-			}
-		</select>
+		@for (e of mostrarEspecialistas; track $index) {
+			<div class="card" style="width: 50rem;">
+				<img [src]="e.foto" style="max-height: 180px;" class="card-img-top" alt="...">
+				<div class="card-body">
+				  <h5 class="card-title">{{e.nombre}} {{e.apellido}}</h5>
+				  <!--href#especialidades-->
+				  <a (click)="verEspecialidades(e)" class="btn btn-danger">Ver especialidades</a>
+				</div>
+			  </div>
+		}
+		<button (click)="actualizar('+')" class="mt-16">
+			<i class="fa-solid fa-arrow-right fa-2xl"></i>
+		</button>
+	</div>
+	<!--id especialidades-->
+	  <div id="especialidades" class="mt-5 p-5 flex flex-row space-x-28 justify-center">
+		@for (especialidad of especialistaSeleccionado?.especialidad; track $index) {
+			<button (click)="seleccionarEspecialidad(especialidad)" type="button" class="btn btn-danger h-32 w-64" style="font-size: 30px;">{{especialidad}}</button>
+		}
 	  </div>
-	  <div  class="w-screen tabla">
-		<table class="schedule-table text-center">
-			<thead>
-				<tr>
-					@for (dia of diasDisponibles ; track $index) {
-						<th>{{dia | date:'shortDate'}}</th>
+	  @if (mostrarTabla) {
+
+		  <div class="w-screen tabla ml-36">
+			<table class="schedule-table text-center">
+				<thead>
+					<tr>
+						@for (dia of diasDisponibles ; track $index) {
+							<th>{{dia | date:'shortDate'}}</th>
+						}
+					</tr>
+				</thead>
+				<tbody>
+					@if (especialistaSeleccionado) {
+						@for (i of getMaxHorarios(); track $index) {
+							<tr>
+								@for (dia of diasDisponibles; track $index) {
+										<td>
+											<button class="hover:bg-gray-300" (click)="sacarTurno(obtenerHorario(dia,i))">
+												{{ obtenerHorario(dia, i) }}
+											</button>
+										</td>
+								}
+							</tr>
+						}
+						
 					}
-				</tr>
-			</thead>
-			<tbody>
-				@if (especialistaSeleccionado) {
-					<tr *ngFor="let index of getMaxHorarios()">
-						<td *ngFor="let dia of diasDisponibles">
-						  <!-- Para cada día, obtener el horario correspondiente si existe en el índice actual -->
-						  {{ obtenerHorario(dia, index) }}
-						</td>
-					  </tr>
-					
-				}
-			</tbody>
-		  </table>
-	  </div>
+				</tbody>
+			  </table>
+		  </div>
+	  }
 </div>
 
 @if (mostrarSpinner) {

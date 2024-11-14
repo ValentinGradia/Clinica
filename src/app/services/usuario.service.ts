@@ -55,10 +55,23 @@ export class UsuarioService {
     });
   }
 
-  traerEspecialistas(): Observable<IEspecialista[]> {
+  traerEspecialistasAprobados(): Observable<IEspecialista[]> {
     const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
 
-    return collectionData(col, { idField: 'id' }) as Observable<
+    const especialistaQuery = query(col,(where('estado','==','aprobado')));
+
+    return collectionData(especialistaQuery, { idField: 'id' }) as Observable<
+      IEspecialista[]
+    >;
+  }
+
+
+  traerEspecialistasPendientes(): Observable<IEspecialista[]> {
+    const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
+
+    const especialistaQuery = query(col,(where('estado','==','pendiente')));
+
+    return collectionData(especialistaQuery, { idField: 'id' }) as Observable<
       IEspecialista[]
     >;
   }

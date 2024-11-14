@@ -50,6 +50,6 @@ export const routes: Routes = [
 	{
 		path : 'solicitar-turno',
 		loadComponent : () => import('./componentes/solicitar-turno/solicitar-turno.component').then(m => m.SolicitarTurnoComponent),
-		canActivate: [solicitarTurnoGuard]
+		// canActivate: [solicitarTurnoGuard]
 	}
 ];

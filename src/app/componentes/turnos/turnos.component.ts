@@ -37,12 +37,12 @@ export class TurnosComponent implements OnInit {
       this.turnos.push(turno as ITurno);
     });
 
-    this.turnos = this.turnos.map(turno => {
-      return {
-        ...turno, 
-        fecha: (turno.fecha && turno.fecha instanceof Timestamp) ? turno.fecha.toDate() : turno.fecha // Convertir `Timestamp` a `Date`
-      } as ITurno;
-    })
+    // this.turnos = this.turnos.map(turno => {
+    //   return {
+    //     ...turno, 
+    //     fecha: (turno.fecha && turno.fecha instanceof Timestamp) ? turno.fecha.toDate() : turno.fecha // Convertir `Timestamp` a `Date`
+    //   } as ITurno;
+    // })
 
     this.todosLosTurnos = this.turnos;
 

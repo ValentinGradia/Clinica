@@ -45,8 +45,8 @@ export class UsuariosComponent implements OnInit {
   async ngOnInit(): Promise<void> {
 
     this.mostrarSpinner = true;
-    await this.usuarios.traerEspecialistas().subscribe((data) => {
-      this.especialistas = data.filter(especialista => especialista.estado === "pendiente");
+    await this.usuarios.traerEspecialistasPendientes().subscribe((data) => {
+      this.especialistas = data;
       this.mostrarSpinner = false;
     });
 
@@ -144,6 +144,7 @@ export class UsuariosComponent implements OnInit {
   {
     this.usuarios.aprobarEspecialista(especialista.id!);
     this.auth.registrarUsuario(especialista.correo,especialista.contrasenia);
+    this.especialistas = this.especialistas.filter(e => e !== especialista);
     Swal.fire({
       position: "center",
       icon: "success",

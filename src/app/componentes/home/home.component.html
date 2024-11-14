@@ -29,6 +29,11 @@
 			  }
 			  
 			  <a routerLink="/perfil" class="rounded-md px-3 no-underline py-2 text-lg font-bold text-white hover:bg-gray-500 hover:text-white">Ver perfil</a>
+
+			  @if (correoUsuario) 
+			  {
+				<a (click)="cerrarSesion()"  class="rounded-md px-3 no-underline py-2 text-lg bg-red-500 font-bold text-white hover:bg-gray-500 hover:text-white">Cerrar sesión</a>
+			  }
 			</div>
 		  </div>
 		</div>

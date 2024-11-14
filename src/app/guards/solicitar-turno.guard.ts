@@ -7,7 +7,7 @@ export const solicitarTurnoGuard: CanActivateFn = (route, state) => {
   var auth = inject(AuthService);
 
 
-  if(auth.tipoUsuario !== 'Especialista')
+  if(auth.tipoUsuario == 'Especialista')
   {
     Swal.fire({
       position: "center",

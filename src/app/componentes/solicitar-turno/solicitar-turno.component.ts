@@ -7,6 +7,10 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { IEspecialista } from '../../interfaces/iespecialista';
+import { EstadoTurno } from '../../enums/estadoTurno';
+import { TurnosService } from '../../services/turnos.service';
+import { ITurno } from '../../interfaces/iturno';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-solicitar-turno',
@@ -19,26 +23,29 @@ export class SolicitarTurnoComponent implements OnInit {
 
   usuariosDb = inject(UsuarioService);
   auth = inject(AuthService);
-  especialidades : string[] = [];
+  turnosDb = inject(TurnosService);
   mostrarSpinner = false;
   especialistas : IEspecialista[] = [];
+  mostrarEspecialistas : IEspecialista[] = []
   especialistasFiltrados : IEspecialista[] = [];
+  especialidadSeleccionada : string | null = null;
+  valorInicial = 3;
+  mostrarTabla  :boolean = false;
   diasDisponibles : Array<any> = [];
 
-  especialidadSeleccionada : string | null = null;
   especialistaSeleccionado : IEspecialista | null = null;
 
   async ngOnInit(): Promise<void> {
     this.mostrarSpinner = true;
     //el firstValueFrom convierte el observable a una promesa
-    const data = await firstValueFrom(this.usuariosDb.traerEspecialistas());
+    const data = await firstValueFrom(this.usuariosDb.traerEspecialistasAprobados());
     this.especialistas = data;
 
-    data.forEach(especialista => {
-      this.especialidades.push(...especialista.especialidad);
-    });
+
+    this.mostrarEspecialistas = this.especialistas.slice(0,3);
 
     this.setearDias();
+    console.log(this.especialistas);
 
     this.mostrarSpinner = false;
   }
@@ -58,13 +65,53 @@ export class SolicitarTurnoComponent implements OnInit {
     }
   }
 
-
-  seleccionarEspecialidad(event: Event) : void
+  actualizar(accion : string) : void
   {
-    const selectElement = event.target as HTMLSelectElement;
-    this.especialidadSeleccionada = selectElement.value;
+    if(accion == '+')
+    {
+      
+      this.mostrarEspecialistas = this.especialistas.slice(this.valorInicial, this.valorInicial+3);
+      this.valorInicial += 3;
+    }
+    else
+    {
+      if(this.valorInicial !== 3)
+      {
+        this.mostrarEspecialistas = this.especialistas.slice(this.valorInicial-6, this.valorInicial-3);
+        this.valorInicial -= 3;
+      }
+    }
+  }
 
-    this.filtrarEspecialistas(this.especialidadSeleccionada);
+
+  seleccionarEspecialidad(especialidad : string) : void
+  {
+    this.especialidadSeleccionada = especialidad;
+    this.mostrarTabla = true;
+  }
+
+  sacarTurno(fecha : string)
+  {
+    this.mostrarSpinner = !this.mostrarSpinner;
+    var turno = {
+      idPaciente : this.auth.usuarioActual?.id,
+      idEspecialista: this.especialistaSeleccionado?.id,
+      especialidad: this.especialidadSeleccionada,
+      estado: EstadoTurno.PENDIENTE,
+      nombreEspecialista: this.especialistaSeleccionado?.nombre,
+      apellidoEspecialista: this.especialistaSeleccionado?.nombre,
+      fecha: fecha
+    } as ITurno
+
+    this.turnosDb.agregarTurno(turno)
+    this.mostrarSpinner = !this.mostrarSpinner;
+    Swal.fire({
+      title: "Completado",
+      text: "Turno en estado pendiente",
+      icon: "success",
+      position :"center",
+      timer : 1500
+    });
   }
 
 
@@ -88,6 +135,13 @@ export class SolicitarTurnoComponent implements OnInit {
   obtenerHorario(dia: Date, index: number): string {
     const horarios = this.filtrarFecha(dia);
     return horarios[index] || '';
+  }
+
+  verEspecialidades(e : IEspecialista) : void
+  {
+    this.especialistaSeleccionado = e;
+    this.especialidadSeleccionada = null;
+    this.mostrarTabla = false;
   }
 
   getMaxHorarios(): number[] {
