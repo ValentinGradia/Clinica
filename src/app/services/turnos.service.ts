@@ -46,7 +46,8 @@ export class TurnosService {
       estado: turno.estado,
       nombreEspecialista: turno.nombreEspecialista,
       apellidoEspecialista: turno.apellidoEspecialista,
-      fecha: turno.fecha
+      dia: turno.dia,
+      hora: turno.hora
     });
   }
 }

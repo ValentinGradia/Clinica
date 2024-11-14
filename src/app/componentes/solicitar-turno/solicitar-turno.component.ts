@@ -90,7 +90,7 @@ export class SolicitarTurnoComponent implements OnInit {
     this.mostrarTabla = true;
   }
 
-  sacarTurno(fecha : string)
+  sacarTurno(horario : string, dia : string)
   {
     this.mostrarSpinner = !this.mostrarSpinner;
     var turno = {
@@ -100,7 +100,8 @@ export class SolicitarTurnoComponent implements OnInit {
       estado: EstadoTurno.PENDIENTE,
       nombreEspecialista: this.especialistaSeleccionado?.nombre,
       apellidoEspecialista: this.especialistaSeleccionado?.nombre,
-      fecha: fecha
+      dia: dia,
+      hora: horario
     } as ITurno
 
     this.turnosDb.agregarTurno(turno)
@@ -110,7 +111,6 @@ export class SolicitarTurnoComponent implements OnInit {
       text: "Turno en estado pendiente",
       icon: "success",
       position :"center",
-      timer : 1500
     });
   }
 

@@ -42,9 +42,11 @@
 							<tr>
 								@for (dia of diasDisponibles; track $index) {
 										<td>
-											<button class="hover:bg-gray-300" (click)="sacarTurno(obtenerHorario(dia,i))">
-												{{ obtenerHorario(dia, i) }}
-											</button>
+											@if (obtenerHorario(dia,i)) {
+												<button  class="bg-gray-300 rounded-sm h-14 w-14 hover:bg-gray-400" (click)="sacarTurno(obtenerHorario(dia,i), dia)">
+													{{ obtenerHorario(dia, i) }}
+												</button>
+											}
 										</td>
 								}
 							</tr>
