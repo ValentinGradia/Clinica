@@ -49,26 +49,9 @@ export class TurnosService {
   {
     const col = collection(this.firestore, Colecciones.TURNOS);
     const documento = doc(col,turno.id);
-    if(turno.primerDatoDinamico && turno.segundoDatoDinamico && turno.tercerDatoDinamico)
-    {
 
-      const plainObject = Object.fromEntries(turno.primerDatoDinamico!);
-      const plainObject2 = Object.fromEntries(turno.segundoDatoDinamico!);
-      const plainObject3 = Object.fromEntries(turno.tercerDatoDinamico!);
-
-      const turnoActualizado = {
-        ...turno,
-        primerDatoDinamico: plainObject,
-        segundoDatoDinamico: plainObject2,
-        tercerDatoDinamico: plainObject3
-      }
-      updateDoc(documento,turnoActualizado);
-    }
-    else
-    {
-
-      updateDoc(documento,{...turno});
-    }
+    updateDoc(documento,{...turno});
+    
   }
 
 
@@ -102,6 +85,8 @@ export class TurnosService {
       estado: turno.estado,
       nombreEspecialista: turno.nombreEspecialista,
       apellidoEspecialista: turno.apellidoEspecialista,
+      nombrePaciente: turno.nombrePaciente,
+      fotoPaciente: turno.fotoPaciente,
       dia: turno.dia,
       hora: turno.hora
     });

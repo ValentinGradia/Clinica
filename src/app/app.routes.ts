@@ -16,7 +16,7 @@ import { loadBundle } from '@angular/fire/firestore';
 export const routes: Routes = [
 	{
 		path: '',
-		redirectTo: 'inicio',
+		redirectTo: '/inicio',
 		pathMatch : 'full'
 	},
 	{
@@ -44,7 +44,7 @@ export const routes: Routes = [
 	{
 		path : 'perfil',
 		component: PerfilComponent,
-		// canActivate : [logueadoGuard]
+		canActivate : [logueadoGuard]
 	},
 	{
 		path : 'solicitar-turno',

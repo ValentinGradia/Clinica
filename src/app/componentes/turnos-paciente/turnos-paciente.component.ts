@@ -35,7 +35,7 @@ export class TurnosPacienteComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.mostrarSpinner = true;
-    const resp = (await this.turnosService.traerTurnosPaciente('CbFDkyWQXZyVcWbrSIeL'))
+    const resp = (await this.turnosService.traerTurnosPaciente(this.auth.usuarioActual?.id!))
     resp.forEach(turno => {
       this.turnos.push(turno as ITurno);
     });

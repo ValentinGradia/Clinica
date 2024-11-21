@@ -3,7 +3,6 @@
 		<i class="fa-solid fa-arrow-left fa-xl"></i>
 	</button>
 
-	<!-- Contenedor de los turnos -->
 	<div class="turnos-container text-center">
 		@for (turno of turnos; track $index) {
 			<div 
@@ -12,7 +11,6 @@
 			<h1 class="turno-nombre">{{turno.nombrePaciente}}</h1>
 			  <img 
 				[src]="turno.fotoPaciente" 
-				alt="{{turno.nombrePaciente}}" 
 				class="turno-img" 
 			  />
 			  

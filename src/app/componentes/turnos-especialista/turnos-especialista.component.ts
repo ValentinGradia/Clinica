@@ -254,12 +254,29 @@ export class TurnosEspecialistaComponent {
       }
 
       turno.historiaClinica = true;
-      turno.primerDatoDinamico = new Map<any,any>();
-      turno.primerDatoDinamico.set(primerClave!,primerValor!);
-      turno.segundoDatoDinamico = new Map<any,any>();
-      turno.segundoDatoDinamico!.set(segundaClave!,segundoValor!);
-      turno.tercerDatoDinamico = new Map<any,any>();
-      turno.tercerDatoDinamico!.set(tercerClave!,tercerValor!);
+      if(primerClave && primerValor)
+      {
+        var objetoMap = new Map<any,any>();
+        objetoMap.set(primerClave!,primerValor!);
+        const plainObject = Object.fromEntries(objetoMap);
+        turno.primerDatoDinamico = plainObject;
+      }
+
+      if(segundaClave && segundoValor)
+      {
+        objetoMap = new Map<any,any>();
+        objetoMap.set(segundaClave!,segundoValor!);
+        const plainObject2 = Object.fromEntries(objetoMap);
+        turno.segundoDatoDinamico = plainObject2;
+      }
+
+      if(tercerClave && tercerValor)
+      {
+        objetoMap = new Map<any,any>();
+        objetoMap.set(tercerClave!,tercerValor!);
+        const plainObject3 = Object.fromEntries(objetoMap);
+        turno.tercerDatoDinamico = plainObject3;
+      }
     }
 
 
