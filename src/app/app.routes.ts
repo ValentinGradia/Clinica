@@ -9,9 +9,9 @@ import { Component } from '@angular/core';
 import { TurnosComponent } from './componentes/turnos/turnos.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { logueadoGuard } from './guards/logueado.guard';
-import { turnoGuard } from './guards/turno.guard';
 import { solicitarTurnoGuard } from './guards/solicitar-turno.guard';
 import { animation } from '@angular/animations';
+import { loadBundle } from '@angular/fire/firestore';
 
 export const routes: Routes = [
 	{
@@ -40,16 +40,31 @@ export const routes: Routes = [
 	{
 		path : 'turnos',
 		loadComponent : () => import('./componentes/turnos/turnos.component').then(m => m.TurnosComponent),
-		canActivate : [turnoGuard]
 	},
 	{
 		path : 'perfil',
 		component: PerfilComponent,
-		canActivate : [logueadoGuard]
+		// canActivate : [logueadoGuard]
 	},
 	{
 		path : 'solicitar-turno',
 		loadComponent : () => import('./componentes/solicitar-turno/solicitar-turno.component').then(m => m.SolicitarTurnoComponent),
-		// canActivate: [solicitarTurnoGuard]
+		canActivate: [solicitarTurnoGuard]
+	},
+	{
+		path:'turnosAdmin',
+		loadComponent : () => import('./componentes/turnos-admin/turnos-admin.component').then(m => m.TurnosAdminComponent),
+	},
+	{
+		path:'turnosEspecialista',
+		loadComponent : () => import('./componentes/turnos-especialista/turnos-especialista.component').then(m => m.TurnosEspecialistaComponent),
+	},
+	{
+		path:'turnosPaciente',
+		loadComponent : () => import('./componentes/turnos-paciente/turnos-paciente.component').then(m => m.TurnosPacienteComponent),
+	},
+	{
+		path:'pacientes',
+		loadComponent : () => import('./componentes/pacientes/pacientes.component').then(m => m.PacientesComponent),
 	}
 ];

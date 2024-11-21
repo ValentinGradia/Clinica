@@ -29,11 +29,67 @@ export class TurnosService {
     return turnos;
   }
 
+  async traerTurnosEspecialista(idEspecialista: string)
+  {
+    var col = collection(this.firestore, Colecciones.TURNOS);
+
+    var queryTurno = query(col,where('idEspecialista','==',idEspecialista));
+
+    var resp = await getDocs(queryTurno);
+
+    const turnos = resp.docs.map(doc => ({
+      id: doc.id,          
+      ...doc.data()        
+    }));
+
+    return turnos;
+  }
+
   actualizarTurno(turno: ITurno): void
   {
     const col = collection(this.firestore, Colecciones.TURNOS);
     const documento = doc(col,turno.id);
-    updateDoc(documento,{...turno});
+    if(turno.primerDatoDinamico && turno.segundoDatoDinamico && turno.tercerDatoDinamico)
+    {
+
+      const plainObject = Object.fromEntries(turno.primerDatoDinamico!);
+      const plainObject2 = Object.fromEntries(turno.segundoDatoDinamico!);
+      const plainObject3 = Object.fromEntries(turno.tercerDatoDinamico!);
+
+      const turnoActualizado = {
+        ...turno,
+        primerDatoDinamico: plainObject,
+        segundoDatoDinamico: plainObject2,
+        tercerDatoDinamico: plainObject3
+      }
+      updateDoc(documento,turnoActualizado);
+    }
+    else
+    {
+
+      updateDoc(documento,{...turno});
+    }
+  }
+
+
+  async traerTurnosFinalizados(idEspecialista: string)
+  {
+    var col = collection(this.firestore, Colecciones.TURNOS);
+
+    var queryTurno = query(
+      col,
+      where('idEspecialista', '==', idEspecialista),
+      where('historiaClinica', '==', true)
+    );
+
+    var resp = await getDocs(queryTurno);
+
+    const turnos = resp.docs.map(doc => ({
+      id: doc.id,          
+      ...doc.data()        
+    }));
+
+    return turnos;
   }
 
   agregarTurno(turno : ITurno) : void

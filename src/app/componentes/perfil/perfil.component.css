@@ -86,3 +86,10 @@
   .schedule-table tbody tr:nth-child(odd) {
 	background-color: #fff;
   }
+
+
+  input
+  {
+	height: 35px;
+	padding: 4px;
+  }

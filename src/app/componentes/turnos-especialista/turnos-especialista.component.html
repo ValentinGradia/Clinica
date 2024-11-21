@@ -1,0 +1,73 @@
+<nav class="navbar bg-body-tertiary fixed">
+	<div class="flex flex-row justify-center w-4/6 text-center pl-16" id="contenido">
+	  <input
+		[(ngModel)]="valorFiltro"
+		class="form-control me-2"
+		type="search"
+		aria-label="Search"
+	  />
+	  <button
+		(click)="filtrarTurno()"
+		class="btn btn-outline-success ml-8"
+		type="submit"
+	  >
+		Buscar
+	  </button>
+	  <button (click)="resetFiltro()" class="btn btn-danger ml-8" type="submit">
+		Resetear
+	  </button>
+	</div>
+  </nav>
+  
+  <div class="w-full h-full p-5">
+	<div class="grid grid-cols-2 gap-5 w-full">
+	  @for (turno of turnos; track $index) {
+	  <div class="card w-4/6">
+		<h5 class="card-header">
+		  <i class="fa-solid fa-stethoscope fa-lg"></i>
+		  {{ turno.especialidad }}
+		  <span class="pl-14">
+
+			  Estado : {{turno.estado}}
+		  </span>
+		</h5>
+		<div class="card-body">
+		  <h5 class="card-title">
+			<i class="fa-solid fa-user-doctor fa-lg"></i>
+			{{ turno.nombrePaciente }}
+		  </h5>
+  
+		  <p class="card-text">{{ turno.dia.toLocaleString('es-ES', { weekday: 'short' })}} {{turno.dia.toLocaleString('es-ES', { month: 'short' })}} {{turno.dia.getDate()}} {{turno.hora}}</p>
+		  <div class="grid grid-cols-4 gap-2">
+			@if (turno.resenia) {
+			  <button (click)="verResenia(turno)" href="#" class="btn btn-info">Ver reseña</button>
+			}
+
+			@if (turno.estado == 'aprobado' ) {
+				<button (click)="cancearTurno(turno)" href="#" class="btn btn-danger">Cancelar</button>
+
+				<button (click)="finalizarTurno(turno)" href="#" class="btn btn-danger">Finalizar</button>
+			}
+
+			@if (turno.estado == 'cancelado') {
+				<div class="col-span-3">
+				  <p class="card-text">Turno cancelado : {{turno.motivoCancelacion}}</p>
+				</div>
+			  }
+
+			@if (turno.estado == 'pendiente') {
+				<button (click)="aceptarTurno(turno)" href="#" class="btn btn-danger">Aceptar</button>
+			}
+		  </div>
+		</div>
+	  </div>
+	  }
+	</div>
+  </div>
+  
+  @if(mostrarSpinner) {
+  	<app-spinner></app-spinner>
+  }
+
+  
+

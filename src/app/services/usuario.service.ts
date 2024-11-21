@@ -97,6 +97,18 @@ export class UsuarioService {
     return obvervable; //hacer el subsrcribe desde el componente
   }
 
+  async traerEspecialista(id : string): Promise<IEspecialista> {
+    const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
+
+    const especialistaQuery = query(col,(where('id','==',id)));
+
+    const querySnapshot = await getDocs(especialistaQuery);
+
+    const especialista : IEspecialista = querySnapshot.docs[0].data() as IEspecialista;
+
+    return especialista;
+  }
+
   traerAdmins(): Observable<any> {
     const col = collection(this.firestore, Colecciones.ADMINISTRADORES);
     const obvervable = collectionData(col);

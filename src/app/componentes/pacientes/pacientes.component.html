@@ -1,0 +1,31 @@
+<div class="container">
+	<button class="nav-button">
+		<i class="fa-solid fa-arrow-left fa-xl"></i>
+	</button>
+
+	<!-- Contenedor de los turnos -->
+	<div class="turnos-container text-center">
+		@for (turno of turnos; track $index) {
+			<div 
+			  class="turno"
+			>
+			<h1 class="turno-nombre">{{turno.nombrePaciente}}</h1>
+			  <img 
+				[src]="turno.fotoPaciente" 
+				alt="{{turno.nombrePaciente}}" 
+				class="turno-img" 
+			  />
+			  
+			</div>
+		}
+	</div>
+  
+	<button class="nav-button">
+		<i class="fa-solid fa-arrow-right fa-xl"></i>
+	</button>
+  </div>
+
+  @if(mostrarSpinner) {
+	<app-spinner></app-spinner>
+}
+

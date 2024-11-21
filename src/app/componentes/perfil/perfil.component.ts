@@ -8,13 +8,13 @@ import { doc } from '@angular/fire/firestore';
 import { UsuarioService } from '../../services/usuario.service';
 import Swal from 'sweetalert2';
 import { SpinnerComponent } from '../spinner/spinner.component';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [FormsModule, CommonModule, SpinnerComponent],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
@@ -23,6 +23,8 @@ export class PerfilComponent implements AfterViewInit {
   auth = inject(AuthService);
   usuariosDB = inject(UsuarioService);
   usuario !: Usuario;
+
+  protected credentials !: FormGroup;
   especialistaConHorariosAlmacenados : IEspecialista | null = null;
 
 
@@ -30,6 +32,22 @@ export class PerfilComponent implements AfterViewInit {
 
   constructor(){
     this.usuario = this.auth.usuarioActual!;
+  }
+
+  get altura(){
+    return this.credentials.get('altura');
+  }
+
+  get peso(){
+    return this.credentials.get('peso');
+  }
+
+  get temperatura(){
+    return this.credentials.get('temperatura');
+  }
+
+  get presion(){
+    return this.credentials.get('presion');
   }
 
   ngAfterViewInit(): void {

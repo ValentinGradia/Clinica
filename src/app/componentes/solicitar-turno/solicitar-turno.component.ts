@@ -90,21 +90,58 @@ export class SolicitarTurnoComponent implements OnInit {
     this.mostrarTabla = true;
   }
 
-  sacarTurno(horario : string, dia : string)
+  sacarTurno(horario : string, dia : Date | string)
   {
     this.mostrarSpinner = !this.mostrarSpinner;
     var turno = {
       idPaciente : this.auth.usuarioActual?.id,
+      fotoPaciente: this.auth.usuarioActual?.foto,
       idEspecialista: this.especialistaSeleccionado?.id,
       especialidad: this.especialidadSeleccionada,
       estado: EstadoTurno.PENDIENTE,
       nombreEspecialista: this.especialistaSeleccionado?.nombre,
-      apellidoEspecialista: this.especialistaSeleccionado?.nombre,
+      apellidoEspecialista: this.especialistaSeleccionado?.apellido,
+      nombrePaciente: this.auth.usuarioActual?.nombre!,
       dia: dia,
       hora: horario
     } as ITurno
 
+    var numeroDia = dia as Date;
+    switch (numeroDia.getDay().toString()) {
+      case '1':
+        this.especialistaSeleccionado!.lunes! =
+          this.especialistaSeleccionado!.lunes!.filter(
+            (hora) => hora !== horario
+          );
+        break;
+      case '2':
+        this.especialistaSeleccionado!.martes! =
+          this.especialistaSeleccionado!.martes!.filter(
+            (hora) => hora !== horario
+          );
+        break;
+      case '3':
+        this.especialistaSeleccionado!.miercoles! =
+          this.especialistaSeleccionado!.miercoles!.filter(
+            (hora) => hora !== horario
+          );
+        break;
+      case '4':
+        this.especialistaSeleccionado!.jueves! =
+          this.especialistaSeleccionado!.jueves!.filter(
+            (hora) => hora !== horario
+          );
+        break;
+      case '5':
+        this.especialistaSeleccionado!.viernes! =
+          this.especialistaSeleccionado!.viernes!.filter(
+            (hora) => hora !== horario
+          );
+        break;
+    }
+
     this.turnosDb.agregarTurno(turno)
+    this.usuariosDb.actualizarEspecialista(this.especialistaSeleccionado!);
     this.mostrarSpinner = !this.mostrarSpinner;
     Swal.fire({
       title: "Completado",
@@ -155,23 +192,37 @@ export class SolicitarTurnoComponent implements OnInit {
     return Array(maxHorarios).fill(0).map((_, i) => i); 
   }
 
-  filtrarFecha(fecha: Date): string[] {
+  filtrarFecha(fecha: Date): string[] 
+  {
     const diaSemana = fecha.getDay();
-
+    let horarios: string[] = [];
+  
     switch (diaSemana) {
       case 1:
-        return this.especialistaSeleccionado?.lunes ?? [];
+        horarios = this.especialistaSeleccionado?.lunes ?? [];
+        break;
       case 2:
-        return this.especialistaSeleccionado?.martes ?? [];
+        horarios = this.especialistaSeleccionado?.martes ?? [];
+        break;
       case 3:
-        return this.especialistaSeleccionado?.miercoles ?? [];
+        horarios = this.especialistaSeleccionado?.miercoles ?? [];
+        break;
       case 4:
-        return this.especialistaSeleccionado?.jueves ?? [];
+        horarios = this.especialistaSeleccionado?.jueves ?? [];
+        break;
       case 5:
-        return this.especialistaSeleccionado?.viernes ?? [];
+        horarios = this.especialistaSeleccionado?.viernes ?? [];
+        break;
       default:
         return [];
     }
+  
+    return horarios.sort((a, b) => {
+      const [horaA, minutoA] = a.split(':').map(Number);
+      const [horaB, minutoB] = b.split(':').map(Number);
+  
+      return horaA * 60 + minutoA - (horaB * 60 + minutoB);
+    });
   }
 
 }
