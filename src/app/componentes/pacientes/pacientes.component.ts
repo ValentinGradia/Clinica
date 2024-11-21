@@ -41,12 +41,73 @@ export class PacientesComponent implements OnInit {
     resp.forEach(turno => {
       this.turnos.push(turno as ITurno);
     });
+
+    this.turnos = this.turnos.map(turno => {
+      return {
+        ...turno, 
+        dia: (turno.dia && turno.dia instanceof Timestamp) ? turno.dia.toDate() : turno.dia // Convertir `Timestamp` a `Date`
+      } as ITurno;
+    })
     this.mostrarSpinner = false;
   }
 
   seleccionarTurno(turno: ITurno) : void
   {
-    
+
+    const diaTurno = 
+    turno.dia.toLocaleString('es-ES', { weekday: 'short' }) + " " + 
+    turno.dia.toLocaleString('es-ES', { month: 'short' }) + " " + 
+    turno.dia.getDate();
+
+    Swal.fire({
+      title: 'Informacion turno',
+      html: `
+        <div class="flex flex-col">
+          <div class="grid grid-cols-2">
+            <div class="flex">
+            
+              <label class="text-3xl">Dia: </label>
+              <p class="text-3xl ml-4">${diaTurno}</p>
+            </div>
+
+            <div class="flex">         
+              <label class="text-3xl ml-8">Hora: </label>
+              <p class="text-3xl ml-4">${turno.hora}</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2">
+            <div class="flex">
+              <label class="text-3xl">Altura: </label>
+              <p class="text-3xl ml-4">${turno.altura} cm</p>
+            </div>
+            <div class="flex">
+              <label class="text-3xl ml-8">Peso: </label>
+              <p class="text-3xl ml-4">${turno.peso} kg</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2">
+            <div class="flex">
+              <label class="text-3xl">Temp: </label>
+              <p class="text-3xl ml-4">${turno.temperatura}°C</p>
+            </div>
+            <div class="flex">
+              <label class="text-3xl ml-8">Presion: </label>
+              <p class="text-3xl ml-4">${turno.presion}</p>
+            </div>
+          </div>
+        </div>
+      `,
+      confirmButtonText: "Mostrar reseña",
+      showCancelButton: true,
+      cancelButtonText: 'Aceptar',
+    }).then((result) => {
+      if(result.isConfirmed)
+      {
+        Swal.fire({
+          title: `${turno.resenia}`,
+        })
+      }
+    });
   }
 
 }
