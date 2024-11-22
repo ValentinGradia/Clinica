@@ -30,14 +30,9 @@ export class PacientesComponent implements OnInit {
   turnos : ITurno[] = [];
 
 
-  constructor()
-  {
-    
-  }
-
   async ngOnInit(): Promise<void> {
     this.mostrarSpinner = true;
-    const resp = (await this.turnosService.traerTurnosFinalizados('Flop3kEUP22GCphjczuc'))
+    const resp = (await this.turnosService.traerTurnosFinalizados(this.auth.usuarioActual!.id!))
     resp.forEach(turno => {
       this.turnos.push(turno as ITurno);
     });

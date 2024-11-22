@@ -46,7 +46,7 @@ export class TurnosEspecialistaComponent {
   }
   async ngOnInit(): Promise<void> {
     this.mostrarSpinner = true;
-    const resp = (await this.turnosService.traerTurnosEspecialista(this.auth.usuarioActual!.id!))
+    const resp = (await this.turnosService.traerTurnosEspecialista('Flop3kEUP22GCphjczuc'))
     resp.forEach(turno => {
       this.turnos.push(turno as ITurno);
     });
@@ -54,7 +54,7 @@ export class TurnosEspecialistaComponent {
     this.turnos = this.turnos.map(turno => {
       return {
         ...turno, 
-        dia: (turno.dia && turno.dia instanceof Timestamp) ? turno.dia.toDate() : turno.dia // Convertir `Timestamp` a `Date`
+        dia: (turno.dia && turno.dia instanceof Timestamp) ? turno.dia.toDate() : turno.dia, // Convertir `Timestamp` a `Date`
       } as ITurno;
     })
 
@@ -84,7 +84,58 @@ export class TurnosEspecialistaComponent {
 
     const regex = new RegExp(`^${this.valorFiltro}`, 'i');
 
+    var primeraCopia = this.turnos;
+    var segundaCopia = this.turnos;
+    var tercerCopia  = this.turnos;
+
     this.turnos = this.turnos.filter(turno => regex.test(turno.nombrePaciente) || regex.test(turno.especialidad));
+
+    var arrayFiltrado : ITurno[] = tercerCopia.filter(turno => {
+      if(turno.primerDatoDinamico)
+      {
+        var claves = Object.keys(turno.primerDatoDinamico);
+
+        return claves.length > 0 && regex.test(claves[0]);
+      }
+      else
+      {
+        return false;
+      }
+    });
+
+    var  segundoArrayFiltrado : ITurno[] = tercerCopia.filter(turno => {
+      if(turno.segundoDatoDinamico)
+      {
+        var claves = Object.keys(turno.segundoDatoDinamico);
+
+        return claves.length > 0 && regex.test(claves[0]);
+      }
+      else
+      {
+        return false;
+      }
+    });
+
+    var tercerArrayFiltrado : ITurno[] = tercerCopia.filter(turno => {
+      if(turno.tercerDatoDinamico)
+      {
+        var claves = Object.keys(turno.tercerDatoDinamico);
+
+        return claves.length > 0 && regex.test(claves[0]);
+      }
+      else
+      {
+        return false;
+      }
+    });
+
+    var unionArrayBusqueda = [...this.turnos, ...arrayFiltrado, ...segundoArrayFiltrado, ...tercerArrayFiltrado];
+
+    this.turnos = unionArrayBusqueda.filter((item, index, self) => 
+      index === self.findIndex((t) => t.id === item.id)
+    );
+
+    console.log(this.turnos);
 
   }
 
