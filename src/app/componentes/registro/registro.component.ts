@@ -18,7 +18,7 @@ import { BlobOptions } from 'buffer';
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [FormsModule, RouterModule, CommonModule, ReactiveFormsModule, BienvenidaComponent, CargarPacienteComponent, CargarEspecialistaComponent],
+  imports: [FormsModule, RouterModule, CommonModule, ReactiveFormsModule, CargarPacienteComponent, CargarEspecialistaComponent],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })

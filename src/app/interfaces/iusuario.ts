@@ -7,5 +7,6 @@ export interface Usuario
 	dni : number,
 	correo: string,
 	contrasenia : string
-	foto : string
+	foto : string,
+	ingreso ?: Date
 }

@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,8 @@ import Swal from 'sweetalert2';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
+  usuariosService = inject(UsuarioService);
 
   constructor(private auth : AuthService, private router: Router){}
 
@@ -61,6 +64,8 @@ export class LoginComponent {
         throw new Error("Usuario no existente");
       }
       await this.auth.setearCorreo(this.correo);
+
+      this.usuariosService.guardarUsuario(this.auth.usuarioActual!);
       this.spinner = !this.spinner;
       Swal.fire({
         icon: "success",

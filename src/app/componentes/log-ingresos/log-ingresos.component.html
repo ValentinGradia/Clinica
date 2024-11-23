@@ -1,0 +1,32 @@
+<div class="contenedor">
+	<h2>Historial de ingresos</h2>
+	<table>
+	  <thead>
+		<tr>
+		  <th>Nombre</th>
+		  <th>Apellido</th>
+		  <th>Edad</th>
+		  <th>DNI</th>
+		  <th>Correo</th>
+		  <th>Ingreso</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		@for (usuario of ingresos; track $index) {
+			<tr >
+			  <td>{{ usuario.nombre }}</td>
+			  <td>{{ usuario.apellido }}</td>
+			  <td>{{ usuario.edad }}</td>
+			  <td>{{ usuario.dni }}</td>
+			  <td>{{ usuario.correo }}</td>
+			  <td>{{ usuario.ingreso?.toLocaleString() }}</td>
+			</tr>
+		}
+	  </tbody>
+	</table>
+  </div>
+
+  @if(mostrarSpinner) {
+	<app-spinner></app-spinner>
+}
+  

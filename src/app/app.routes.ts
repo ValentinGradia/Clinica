@@ -71,5 +71,9 @@ export const routes: Routes = [
 	{
 		path:'turnosPorEspecialidad',
 		loadComponent : () => import('./componentes/turnos-por-especialidad/turnos-por-especialidad.component').then(m => m.TurnosPorEspecialidadComponent),
+	},
+	{
+		path:'ingresos',
+		loadComponent : () => import('./componentes/log-ingresos/log-ingresos.component').then(m => m.LogIngresosComponent),
 	}
 ];

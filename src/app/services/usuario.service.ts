@@ -5,6 +5,7 @@ import { IAdmin } from '../interfaces/iadmin';
 import { IEspecialista } from '../interfaces/iespecialista';
 import { IPaciente } from '../interfaces/ipaciente';
 import { Colecciones } from '../enums/colecciones';
+import { Usuario } from '../interfaces/iusuario';
 
 @Injectable({
   providedIn: 'root',
@@ -52,6 +53,18 @@ export class UsuarioService {
       correo: a.correo,
       contrasenia: a.contrasenia,
       foto: a.foto,
+    });
+  }
+
+  guardarUsuario(a: Usuario): void {
+    const col = collection(this.firestore, Colecciones.INGRESOS);
+    addDoc(col, {
+      nombre: a.nombre,
+      apellido: a.apellido,
+      edad: a.edad,
+      dni: a.dni,
+      correo: a.correo,
+      ingreso : Date.now()
     });
   }
 
@@ -114,6 +127,13 @@ export class UsuarioService {
     const obvervable = collectionData(col);
 
     return obvervable; //hacer el subsrcribe desde el componente
+  }
+
+  traerIngresos(): Observable<Usuario[]> {
+    const col = collection(this.firestore, Colecciones.INGRESOS);
+    const obvervable = collectionData(col);
+
+    return obvervable; 
   }
  
 }
