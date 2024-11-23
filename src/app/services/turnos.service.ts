@@ -75,6 +75,13 @@ export class TurnosService {
     return turnos;
   }
 
+  traerTurnos(): Observable<ITurno[]> {
+    const col = collection(this.firestore, Colecciones.TURNOS);
+    const obvervable = collectionData(col);
+
+    return obvervable; 
+  }
+
   agregarTurno(turno : ITurno) : void
   {
     const col = collection(this.firestore, Colecciones.TURNOS);

@@ -46,7 +46,7 @@ export class TurnosEspecialistaComponent {
   }
   async ngOnInit(): Promise<void> {
     this.mostrarSpinner = true;
-    const resp = (await this.turnosService.traerTurnosEspecialista('Flop3kEUP22GCphjczuc'))
+    const resp = (await this.turnosService.traerTurnosEspecialista(this.auth.usuarioActual?.id!))
     resp.forEach(turno => {
       this.turnos.push(turno as ITurno);
     });
@@ -88,7 +88,8 @@ export class TurnosEspecialistaComponent {
     var segundaCopia = this.turnos;
     var tercerCopia  = this.turnos;
 
-    this.turnos = this.turnos.filter(turno => regex.test(turno.nombrePaciente) || regex.test(turno.especialidad));
+    this.turnos = this.turnos.filter(turno => regex.test(turno.nombrePaciente) || regex.test(turno.especialidad) || regex.test(turno.presion!) || 
+                                      regex.test(turno.altura!.toString()) || regex.test(turno.peso!.toString()) || regex.test(turno.temperatura!.toString()));
 
     var arrayFiltrado : ITurno[] = tercerCopia.filter(turno => {
       if(turno.primerDatoDinamico)
@@ -134,8 +135,6 @@ export class TurnosEspecialistaComponent {
     this.turnos = unionArrayBusqueda.filter((item, index, self) => 
       index === self.findIndex((t) => t.id === item.id)
     );
-
-    console.log(this.turnos);
 
   }
 

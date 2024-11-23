@@ -40,6 +40,7 @@ export const routes: Routes = [
 	{
 		path : 'turnos',
 		loadComponent : () => import('./componentes/turnos/turnos.component').then(m => m.TurnosComponent),
+		canActivate : [logueadoGuard]
 	},
 	{
 		path : 'perfil',
@@ -52,10 +53,6 @@ export const routes: Routes = [
 		canActivate: [solicitarTurnoGuard]
 	},
 	{
-		path:'turnosAdmin',
-		loadComponent : () => import('./componentes/turnos-admin/turnos-admin.component').then(m => m.TurnosAdminComponent),
-	},
-	{
 		path:'turnosEspecialista',
 		loadComponent : () => import('./componentes/turnos-especialista/turnos-especialista.component').then(m => m.TurnosEspecialistaComponent),
 	},
@@ -66,5 +63,9 @@ export const routes: Routes = [
 	{
 		path:'pacientes',
 		loadComponent : () => import('./componentes/pacientes/pacientes.component').then(m => m.PacientesComponent),
+	},
+	{
+		path:'turnosPorDia',
+		loadComponent : () => import('./componentes/turnos-por-dia/turnos-por-dia.component').then(m => m.TurnosPorDiaComponent),
 	}
 ];
