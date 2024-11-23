@@ -67,5 +67,9 @@ export const routes: Routes = [
 	{
 		path:'turnosPorDia',
 		loadComponent : () => import('./componentes/turnos-por-dia/turnos-por-dia.component').then(m => m.TurnosPorDiaComponent),
+	},
+	{
+		path:'turnosPorEspecialidad',
+		loadComponent : () => import('./componentes/turnos-por-especialidad/turnos-por-especialidad.component').then(m => m.TurnosPorEspecialidadComponent),
 	}
 ];

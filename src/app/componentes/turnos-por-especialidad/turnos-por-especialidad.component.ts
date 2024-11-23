@@ -15,13 +15,13 @@ import Chart from 'chart.js/auto';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-turnos-por-dia',
+  selector: 'app-turnos-por-especialidad',
   standalone: true,
   imports: [FormsModule, RouterModule, CommonModule, SpinnerComponent],
-  templateUrl: './turnos-por-dia.component.html',
-  styleUrl: './turnos-por-dia.component.css'
+  templateUrl: './turnos-por-especialidad.component.html',
+  styleUrl: './turnos-por-especialidad.component.css'
 })
-export class TurnosPorDiaComponent implements OnInit {
+export class TurnosPorEspecialidadComponent {
 
   turnosService = inject(TurnosService);
   turnos : ITurno[] = [];
@@ -41,11 +41,14 @@ export class TurnosPorDiaComponent implements OnInit {
       } as ITurno;
     })
 
-    const lunes = this.turnos.filter(turno => turno.dia.toLocaleString('es-ES',{ weekday: 'short' }) == 'lun');
-    const martes = this.turnos.filter(turno => turno.dia.toLocaleString('es-ES',{ weekday: 'short' }) == 'mar');
-    const miercoles = this.turnos.filter(turno => turno.dia.toLocaleString('es-ES',{ weekday: 'short' }) == 'mié');
-    const jueves = this.turnos.filter(turno => turno.dia.toLocaleString('es-ES',{ weekday: 'short' }) == 'jue');
-    const viernes = this.turnos.filter(turno => turno.dia.toLocaleString('es-ES',{ weekday: 'short' }) == 'vie');
+    const especialidadesUnicas = Array.from(new Set(this.turnos.map(turno => turno.especialidad)));
+
+    const valores : number[] = [];
+
+    especialidadesUnicas.forEach(especialidad => {
+      var turnos = this.turnos.filter(turno => turno.especialidad == especialidad);
+      valores.push(turnos.length);
+    });
 
     const context = this.barras.nativeElement.getContext('2d');
     new Chart(
@@ -53,10 +56,10 @@ export class TurnosPorDiaComponent implements OnInit {
       {
         type: 'bar',
         data: {
-          labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'],
+          labels: especialidadesUnicas,
           datasets: [{
             label: 'Turnos',
-            data: [lunes.length,martes.length,miercoles.length,jueves.length,viernes.length],
+            data: valores,
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(255, 159, 64, 0.2)',
@@ -95,4 +98,5 @@ export class TurnosPorDiaComponent implements OnInit {
 
     this.mostrarSpinner = false;
   }
+
 }
