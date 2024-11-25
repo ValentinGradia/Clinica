@@ -5,11 +5,12 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { UsuarioService } from '../../services/usuario.service';
+import { RecaptchaModule } from "ng-recaptcha";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, RecaptchaModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -22,6 +23,7 @@ export class LoginComponent {
   correo !: string;
   contrasenia !: string;
   userMenuVisible : boolean = false;
+  mostrarCaptcha : boolean = false;
   users = [
     {
       contrasenia: "10101010",
@@ -63,17 +65,7 @@ export class LoginComponent {
       {
         throw new Error("Usuario no existente");
       }
-      await this.auth.setearCorreo(this.correo);
-
-      this.usuariosService.guardarUsuario(this.auth.usuarioActual!);
-      this.spinner = !this.spinner;
-      Swal.fire({
-        icon: "success",
-        title: "Sesion iniciada con exito",
-        showConfirmButton: false,
-        timer: 1500
-      });
-      this.router.navigateByUrl('/inicio');
+      this.mostrarCaptcha = true;
     }
     catch(error : any)
     {
@@ -84,6 +76,21 @@ export class LoginComponent {
         text: error.message
       });
     }
+  }
+
+  async resolved(captchaResponse: string | null) : Promise<void> {
+    //console.log(`Resolved captcha with response: ${captchaResponse}`);
+    
+    await this.auth.setearCorreo(this.correo);
+    this.usuariosService.guardarUsuario(this.auth.usuarioActual!);
+    this.spinner = !this.spinner;
+    Swal.fire({
+      icon: "success",
+      title: "Sesion iniciada con exito",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    this.router.navigateByUrl('/inicio');
   }
 
   mostrarMenu() : void
