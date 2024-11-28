@@ -64,6 +64,10 @@ export const routes: Routes = [
 		loadComponent : () => import('./componentes/pacientes/pacientes.component').then(m => m.PacientesComponent),
 	},
 	{
+		path:'estadisticas',
+		loadComponent : () => import('./componentes/estadisticas/estadisticas.component').then(m => m.EstadisticasComponent),
+	},
+	{
 		path:'turnosPorDia',
 		loadComponent : () => import('./componentes/turnos-por-dia/turnos-por-dia.component').then(m => m.TurnosPorDiaComponent),
 	},

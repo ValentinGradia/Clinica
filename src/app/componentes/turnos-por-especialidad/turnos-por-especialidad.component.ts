@@ -13,6 +13,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { IEspecialista } from '../../interfaces/iespecialista';
 import Chart from 'chart.js/auto';
 import { firstValueFrom } from 'rxjs';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-turnos-por-especialidad',
@@ -26,6 +27,7 @@ export class TurnosPorEspecialidadComponent {
   turnosService = inject(TurnosService);
   turnos : ITurno[] = [];
   mostrarSpinner : boolean = false;
+  chart : Chart | null = null;
 
   @ViewChild('barras') barras!: ElementRef<HTMLCanvasElement>;
 
@@ -51,7 +53,7 @@ export class TurnosPorEspecialidadComponent {
     });
 
     const context = this.barras.nativeElement.getContext('2d');
-    new Chart(
+    this.chart = new Chart(
       context!,
       {
         type: 'bar',
@@ -97,6 +99,20 @@ export class TurnosPorEspecialidadComponent {
     );
 
     this.mostrarSpinner = false;
+  }
+
+  async descargarGraficoPDF() {
+    const doc = new jsPDF();
+    
+    const imgData = this.chart!.toBase64Image();
+    doc.setFontSize(22);
+    doc.text('Gráfico de turnos por especialidad', 10, 120);
+    
+    doc.addImage(imgData, 'PNG', 10, 10, 180, 100);
+    
+    
+    const nombrePDF = `grafico_especialidad_${new Date().toLocaleString('es-ES')}.pdf`;
+    doc.save(nombrePDF);
   }
 
 }

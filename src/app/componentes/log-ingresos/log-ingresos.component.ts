@@ -14,6 +14,7 @@ import { IEspecialista } from '../../interfaces/iespecialista';
 import Chart from 'chart.js/auto';
 import { firstValueFrom } from 'rxjs';
 import { Usuario } from '../../interfaces/iusuario';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-log-ingresos',
@@ -40,4 +41,25 @@ export class LogIngresosComponent implements OnInit{
       })
       this.mostrarSpinner = false;
   }
+
+
+  async descargarExcelUsuarios() : Promise<void>
+  {
+		const data = this.ingresos.map(usuario => {
+			return {
+			  Nombre: usuario.nombre,
+			  Apellido: usuario.apellido,
+			  Edad: usuario.edad,
+			  DNI: usuario.dni,
+			  Correo: usuario.correo,
+        Ingreso: usuario.ingreso
+			};
+		});
+	
+		const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+		const wb: XLSX.WorkBook = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, ws, 'Ingresos');
+    
+		XLSX.writeFile(wb, 'ingresos.xlsx');
+	}
 }

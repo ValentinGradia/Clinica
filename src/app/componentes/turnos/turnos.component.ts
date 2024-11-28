@@ -26,7 +26,7 @@ export class TurnosComponent{
       this.router.navigateByUrl('/turnosPaciente');
     }
     else{
-      this.router.navigateByUrl('/turnosAdmin');
+      //this.router.navigateByUrl('/turnosAdmin');
     }
   }
 }

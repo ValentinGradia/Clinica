@@ -13,6 +13,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { IEspecialista } from '../../interfaces/iespecialista';
 import Chart from 'chart.js/auto';
 import { firstValueFrom } from 'rxjs';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-turnos-por-dia',
@@ -26,6 +27,7 @@ export class TurnosPorDiaComponent implements OnInit {
   turnosService = inject(TurnosService);
   turnos : ITurno[] = [];
   mostrarSpinner : boolean = false;
+  chart : Chart | null = null;
 
   @ViewChild('barras') barras!: ElementRef<HTMLCanvasElement>;
 
@@ -48,7 +50,7 @@ export class TurnosPorDiaComponent implements OnInit {
     const viernes = this.turnos.filter(turno => turno.dia.toLocaleString('es-ES',{ weekday: 'short' }) == 'vie');
 
     const context = this.barras.nativeElement.getContext('2d');
-    new Chart(
+    this.chart = new Chart(
       context!,
       {
         type: 'bar',
@@ -94,5 +96,19 @@ export class TurnosPorDiaComponent implements OnInit {
     );
 
     this.mostrarSpinner = false;
+  }
+
+  async descargarGraficoPDF() {
+    const doc = new jsPDF();
+    
+    const imgData = this.chart!.toBase64Image();
+    doc.setFontSize(22);
+    doc.text('Gráfico de turnos por dia', 10, 120);
+    
+    doc.addImage(imgData, 'PNG', 10, 10, 180, 100); 
+    
+    
+    const nombrePDF = `grafico_por_dia_${new Date().toLocaleString('es-ES')}.pdf`;
+    doc.save(nombrePDF);
   }
 }
