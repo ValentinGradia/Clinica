@@ -1,0 +1,67 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+	<div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-xl">
+	  <h2 class="text-2xl font-bold text-center mb-6">
+		Estadisticas de turnos solicitados por medico en un lapso de tiempo
+	  </h2>
+	  <form class="space-y-4">
+		<div class="flex flex-col space-y-2">
+		  <label for="fechaInicio" class="font-medium">Fecha de inicio:</label>
+		  <input 
+			type="date" 
+			id="fechaInicio" 
+			class="border border-gray-300 rounded-md p-2 focus:ring focus:ring-blue-200"
+		  />
+		</div>
+		<div class="flex flex-col space-y-2">
+		  <label for="fechaFin" class="font-medium">Fecha de fin:</label>
+		  <input 
+			type="date" 
+			id="fechaFin" 
+			class="border border-gray-300 rounded-md p-2 focus:ring focus:ring-blue-200"
+		  />
+		</div>
+
+		<div class="btn-group w-full">
+			<button 
+			  id="dropdownButton" 
+			  class="dropdown-toggle w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-400 focus:outline-none" 
+			  type="button" 
+			  data-bs-toggle="dropdown" 
+			  aria-expanded="false"
+			>
+			  Seleccionar especialista
+			</button>
+			<ul class="dropdown-menu w-full">
+				@for (especialista of especialistas; track $index) {
+					<li><a class="dropdown-item" (click)="cambiarTexto(especialista)">{{especialista.nombre}} {{especialista.apellido}}</a></li>
+				}
+			</ul>
+		  </div>
+
+		<button 
+		  type="button"
+		  (click)="buscar()"
+		  class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-400 focus:outline-none"
+		>
+		  Buscar
+		</button>
+
+		@if (respuesta) {
+			<div class="flex flex-col space-y-2">
+				<label for="fechaFin" class="text-2xl">Resultado: {{respuesta}}</label>
+			</div>
+		}
+		@else if (respuesta == 0) {
+			<div class="flex flex-col space-y-2">
+				<label for="fechaFin" class="text-2xl">No hay turnos </label>
+			</div>
+		}
+	  </form>
+	</div>
+  </div>
+
+
+  @if(mostrarSpinner) {
+	<app-spinner></app-spinner>
+}
+

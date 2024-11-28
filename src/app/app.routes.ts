@@ -72,6 +72,14 @@ export const routes: Routes = [
 		loadComponent : () => import('./componentes/turnos-por-especialidad/turnos-por-especialidad.component').then(m => m.TurnosPorEspecialidadComponent),
 	},
 	{
+		path:'turnosSolicitados',
+		loadComponent : () => import('./componentes/turnos-solicitados-grafico/turnos-solicitados-grafico.component').then(m => m.TurnosSolicitadosGraficoComponent),
+	},
+	{
+		path:'turnosFinalizados',
+		loadComponent : () => import('./componentes/turnos-finalizados-grafico/turnos-finalizados-grafico.component').then(m => m.TurnosFinalizadosGraficoComponent),
+	},
+	{
 		path:'ingresos',
 		loadComponent : () => import('./componentes/log-ingresos/log-ingresos.component').then(m => m.LogIngresosComponent),
 	},
