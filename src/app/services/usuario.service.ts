@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { observable, Observable } from 'rxjs';
 import { Firestore, collection,addDoc,getDoc,getDocs,updateDoc, collectionData, doc, deleteDoc, where, query } from '@angular/fire/firestore';
 import { IAdmin } from '../interfaces/iadmin';
 import { IEspecialista } from '../interfaces/iespecialista';
@@ -110,6 +110,28 @@ export class UsuarioService {
     return obvervable; //hacer el subsrcribe desde el componente
   }
 
+  async obtenerPacientes(): Promise<IPaciente[]> {
+    const col = collection(this.firestore, Colecciones.PACIENTES);
+
+    const resp = await getDocs(col);
+
+    const pacientes =  resp.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    return pacientes as IPaciente[];
+  }
+
+  async traerEsepecialistas(): Promise<IEspecialista[]> {
+    const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
+
+    const resp = await getDocs(col);
+
+    return resp.docs.map(doc => doc.data() as IEspecialista);
+  }
+
+  
   async traerEspecialista(id : string): Promise<IEspecialista> {
     const col = collection(this.firestore, Colecciones.ESPECIALISTAS);
 
@@ -122,11 +144,12 @@ export class UsuarioService {
     return especialista;
   }
 
-  traerAdmins(): Observable<any> {
+  async traerAdmins(): Promise<IAdmin[]> {
     const col = collection(this.firestore, Colecciones.ADMINISTRADORES);
-    const obvervable = collectionData(col);
 
-    return obvervable; //hacer el subsrcribe desde el componente
+    const resp = await getDocs(col);
+
+    return resp.docs.map(doc => doc.data() as IAdmin);
   }
 
   traerIngresos(): Observable<Usuario[]> {

@@ -1,0 +1,19 @@
+<div class="w-full h-full ">
+	<div class="scroll-container">
+	  @for (usuario of usuarios; track $index) {
+		<div class="card" style="width: 18rem;">
+		  <img [src]="usuario.foto" class="card-img-top" style="height: 65%;" alt="Usuario">
+		  <div class="card-body">
+			<h5 class="card-title">{{usuario.nombre}}</h5>
+			<p class="card-text">{{usuario.apellido}}</p>
+			<a (click)="descargarPDF(usuario)" class="btn btn-primary">Descargar</a>
+		  </div>
+		</div>
+	  }
+	</div>
+  </div>
+
+
+  @if(mostrarSpinner) {
+	<app-spinner></app-spinner>
+}

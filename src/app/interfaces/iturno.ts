@@ -14,7 +14,7 @@ export interface ITurno
 	nombreEspecialista: string,
 	apellidoEspecialista: string,
 	nombrePaciente: string,
-	dia: Date,
+	dia: Date ,
 	hora: string,
 	historiaClinica?: boolean,
 	altura?: number,

@@ -1,0 +1,6 @@
+.scroll-container {
+	display: flex;
+	overflow-x: auto;
+	gap: 1rem; 
+	padding: 1rem; 
+  }

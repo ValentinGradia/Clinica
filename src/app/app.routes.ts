@@ -16,8 +16,7 @@ import { loadBundle } from '@angular/fire/firestore';
 export const routes: Routes = [
 	{
 		path: '',
-		redirectTo: '/inicio',
-		pathMatch : 'full'
+		component : BienvenidaComponent
 	},
 	{
 		path : 'inicio',
@@ -75,5 +74,10 @@ export const routes: Routes = [
 	{
 		path:'ingresos',
 		loadComponent : () => import('./componentes/log-ingresos/log-ingresos.component').then(m => m.LogIngresosComponent),
+	},
+	{
+		path:'seccion-usuarios',
+		loadComponent : () => import('./componentes/seccion-usuarios/seccion-usuarios.component').then(m => m.SeccionUsuariosComponent),
 	}
+
 ];
