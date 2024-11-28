@@ -110,7 +110,6 @@ export class TurnosPorEspecialidadComponent {
     
     doc.addImage(imgData, 'PNG', 10, 10, 180, 100);
     
-    
     const nombrePDF = `grafico_especialidad_${new Date().toLocaleString('es-ES')}.pdf`;
     doc.save(nombrePDF);
   }
