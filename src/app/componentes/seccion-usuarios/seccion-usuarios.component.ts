@@ -11,6 +11,7 @@ import html2canvas from 'html2canvas';
 import { TurnosService } from '../../services/turnos.service';
 import { ITurno } from '../../interfaces/iturno';
 import { Timestamp } from '@angular/fire/firestore';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-seccion-usuarios',
@@ -21,7 +22,8 @@ import { Timestamp } from '@angular/fire/firestore';
 })
 export class SeccionUsuariosComponent implements OnInit {
 
-  usuarios : IPaciente[] = [];
+  pacientes : IPaciente[] = [];
+  usuarios : Usuario[] = [];
   usuariosService = inject(UsuarioService);
   turnosService = inject(TurnosService);
 
@@ -30,8 +32,14 @@ export class SeccionUsuariosComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.mostrarSpinner = !this.mostrarSpinner;
-      this.usuarios = [...await this.usuariosService.obtenerPacientes()
+      this.pacientes = [...await this.usuariosService.obtenerPacientes()
       ];
+
+      this.usuarios = [
+        ...this.pacientes,
+        ...await this.usuariosService.traerEsepecialistas(),
+        ...await this.usuariosService.traerAdmins(),
+      ]
 
       this.mostrarSpinner = !this.mostrarSpinner;
   }
@@ -43,7 +51,7 @@ export class SeccionUsuariosComponent implements OnInit {
     turnosPaciente = turnosPaciente.map(turno => {
       return {
         ...turno, 
-        dia: (turno.dia && turno.dia instanceof Timestamp) ? turno.dia.toDate() : turno.dia // Convertir `Timestamp` a `Date`
+        dia: (turno.dia && turno.dia instanceof Timestamp) ? turno.dia.toDate() : turno.dia 
       } as ITurno;
     })
     var doc = new jsPDF();
@@ -91,5 +99,26 @@ export class SeccionUsuariosComponent implements OnInit {
     this.mostrarSpinner = !this.mostrarSpinner; 
     
   }
+
+  async descargarExcelUsuarios() : Promise<void>
+  {
+		const data = this.usuarios.map(usuario => {
+			return {
+			  Nombre: usuario.nombre,
+			  Apellido: usuario.apellido,
+			  Edad: usuario.edad,
+			  DNI: usuario.dni,
+			  Correo: usuario.correo,
+			};
+		});
+	
+		// Creamos el libro de trabajo y la hoja
+		const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+		const wb: XLSX.WorkBook = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, ws, 'Usuarios');
+	
+		// Exportamos el archivo Excel
+		XLSX.writeFile(wb, 'usuarios.xlsx');
+	  }
 
 }

@@ -128,7 +128,12 @@ export class UsuarioService {
 
     const resp = await getDocs(col);
 
-    return resp.docs.map(doc => doc.data() as IEspecialista);
+    const especialistas =  resp.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    return especialistas as IEspecialista[];
   }
 
   
@@ -149,7 +154,12 @@ export class UsuarioService {
 
     const resp = await getDocs(col);
 
-    return resp.docs.map(doc => doc.data() as IAdmin);
+    const admins =  resp.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    return admins as IAdmin[];
   }
 
   traerIngresos(): Observable<Usuario[]> {

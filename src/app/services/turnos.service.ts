@@ -29,7 +29,7 @@ export class TurnosService {
     return turnos;
   }
 
-  async traerTurnosEspecialista(idEspecialista: string)
+  async traerTurnosEspecialista(idEspecialista: string) : Promise<ITurno[]>
   {
     var col = collection(this.firestore, Colecciones.TURNOS);
 
@@ -42,7 +42,7 @@ export class TurnosService {
       ...doc.data()        
     }));
 
-    return turnos;
+    return turnos as ITurno[];
   }
 
   actualizarTurno(turno: ITurno): void
