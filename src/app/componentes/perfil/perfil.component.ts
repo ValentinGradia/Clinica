@@ -4,17 +4,20 @@ import { IAdmin } from '../../interfaces/iadmin';
 import { IPaciente } from '../../interfaces/ipaciente';
 import { IEspecialista } from '../../interfaces/iespecialista';
 import { Usuario } from '../../interfaces/iusuario';
-import { doc } from '@angular/fire/firestore';
+import { doc, Timestamp } from '@angular/fire/firestore';
 import { UsuarioService } from '../../services/usuario.service';
 import Swal from 'sweetalert2';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import jsPDF from 'jspdf';
+import { TurnosService } from '../../services/turnos.service';
+import { ITurno } from '../../interfaces/iturno';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule, SpinnerComponent],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
@@ -22,7 +25,10 @@ export class PerfilComponent implements AfterViewInit {
 
   auth = inject(AuthService);
   usuariosDB = inject(UsuarioService);
+  turnosService = inject(TurnosService);
   usuario !: Usuario;
+
+  mostrarSpinner : boolean = false;
 
   protected credentials !: FormGroup;
   especialistaConHorariosAlmacenados : IEspecialista | null = null;
@@ -95,11 +101,77 @@ export class PerfilComponent implements AfterViewInit {
   }
 
   esPaciente(usuario: Usuario): usuario is IPaciente {
-    return 'obraSocial' in usuario && 'primerFoto' in usuario && 'segundaFoto' in usuario;
+    return 'obraSocial' in usuario && 'foto' in usuario && 'segundaFoto' in usuario;
   }
 
   esAdmin(usuario: Usuario): usuario is IAdmin {
     return !(this.esEspecialista(usuario) || this.esPaciente(usuario));
+  }
+
+  async descargarHistoriasClinicas() : Promise<void>
+  {
+    this.mostrarSpinner = !this.mostrarSpinner; 
+    var turnosPaciente : ITurno[] = await this.turnosService.traerTurnosPaciente(this.usuario.id!) as ITurno[];
+    turnosPaciente = turnosPaciente.map(turno => {
+      
+      return {
+        ...turno, 
+        dia: (turno.dia && turno.dia instanceof Timestamp) ? turno.dia.toDate() : turno.dia 
+      } as ITurno;
+    }).filter(turno => turno.estado == 'finalizado');
+
+    var doc = new jsPDF();
+    const logo = 'assets/clinica.png';
+    doc.addImage(logo,'PNG',70,10,60,60);
+    doc.setFontSize(30);
+    doc.text(`Historias clinicas`,50,80);
+    var ejeY = 95;
+    var ejeX = 10;
+    for (let i = 0; i < turnosPaciente.length; i++) {
+      const fecha = turnosPaciente[i].dia;
+      const dia = fecha.getDate().toString().padStart(2, "0"); 
+      const mes = (fecha.getMonth() + 1).toString().padStart(2, "0"); 
+      const anio = fecha.getFullYear();
+      doc.setFontSize(22);
+      doc.text(`Turno realizado el ${dia}/${mes}/${anio} a las ${turnosPaciente[i].hora}`,ejeX,ejeY);
+      ejeY += 20;
+      doc.setFontSize(16);
+      doc.text(`Altura: ${turnosPaciente[i].altura}`,ejeX,ejeY);
+      ejeY += 10;
+      doc.text(`Peso: ${turnosPaciente[i].peso}`,ejeX,ejeY);
+      ejeY += 10;
+      doc.text(`Temperatura: ${turnosPaciente[i].temperatura}°C`,ejeX,ejeY);
+      ejeY += 10;
+      doc.text(`Presion: ${turnosPaciente[i].presion}`,ejeX,ejeY);
+      ejeY += 10;
+      if(turnosPaciente[i].primerDatoDinamico)
+      {
+        doc.text(`${Object.keys(turnosPaciente[i].primerDatoDinamico!)[0]}: ${Object.values(turnosPaciente[i].primerDatoDinamico!)[0]}`,ejeX,ejeY);
+        ejeY += 10;
+      }
+
+      if(turnosPaciente[i].segundoDatoDinamico)
+      {
+        doc.text(`${Object.keys(turnosPaciente[i].segundoDatoDinamico!)[0]}: ${Object.values(turnosPaciente[i].segundoDatoDinamico!)[0]}`,ejeX,ejeY);
+        ejeY += 10;
+      }
+
+      if(turnosPaciente[i].tercerDatoDinamico)
+      {
+        doc.text(`${Object.keys(turnosPaciente[i].tercerDatoDinamico!)[0]}: ${Object.values(turnosPaciente[i].tercerDatoDinamico!)[0]}`,ejeX,ejeY);
+        ejeY += 10;
+      }
+
+      if(i % 2 !== 0)
+      {
+        doc.addPage();
+      }
+    }
+
+    const nombrePDF = `${this.usuario.nombre}_${new Date().toLocaleString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false })}.PDF`;
+    doc.save(nombrePDF);
+
+    this.mostrarSpinner = !this.mostrarSpinner; 
   }
 
   actualizarHorario(dia: string, horario: string) : void

@@ -19,8 +19,10 @@
 			</p>
 			
 		}
-		@else if (esPaciente(this.usuario)) {
+
+		@if (esPaciente(this.usuario)) {
 			<p><strong>Obra social: </strong> {{this.usuario.obraSocial}}</p>
+			<button (click)="descargarHistoriasClinicas()" class="btn btn-danger h-10">Descargar historias clinicas PDF</button>
 		}
 	  </div>
 	 </div>
@@ -58,4 +60,9 @@
 	 }
 	
   </div>
+
+
+  @if(mostrarSpinner) {
+	<app-spinner></app-spinner>
+}
 

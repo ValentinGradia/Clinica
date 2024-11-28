@@ -112,13 +112,32 @@ export class SeccionUsuariosComponent implements OnInit {
 			};
 		});
 	
-		// Creamos el libro de trabajo y la hoja
 		const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
 		const wb: XLSX.WorkBook = XLSX.utils.book_new();
 		XLSX.utils.book_append_sheet(wb, ws, 'Usuarios');
-	
-		// Exportamos el archivo Excel
+    
 		XLSX.writeFile(wb, 'usuarios.xlsx');
-	  }
+	}
+
+  async descargarExcelPaciente(usuario : IPaciente) : Promise<void>
+  {
+    var datos = [];
+		const data = {
+			  Nombre: usuario.nombre,
+			  Apellido: usuario.apellido,
+			  Edad: usuario.edad,
+			  DNI: usuario.dni,
+			  Correo: usuario.correo,
+        ObraSocial: usuario.obraSocial
+			};
+
+    datos.push(data);
+	
+		const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datos);
+		const wb: XLSX.WorkBook = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, ws, 'Paciente');
+    
+		XLSX.writeFile(wb, `${usuario.nombre}.xlsx`);
+	}
 
 }
