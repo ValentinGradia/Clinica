@@ -46,7 +46,7 @@ export class TurnosEspecialistaComponent {
   }
   async ngOnInit(): Promise<void> {
     this.mostrarSpinner = true;
-    const resp = (await this.turnosService.traerTurnosEspecialista(this.auth.usuarioActual?.id!))
+    const resp = (await this.turnosService.traerTurnosEspecialista('Flop3kEUP22GCphjczuc'))
     resp.forEach(turno => {
       this.turnos.push(turno as ITurno);
     });
@@ -87,13 +87,23 @@ export class TurnosEspecialistaComponent {
     var primeraCopia = this.turnos;
     var segundaCopia = this.turnos;
     var tercerCopia  = this.turnos;
+    var filtradoPrimerDatoDinamico : ITurno[] = [];
+    var filtradoSegundoDatoDinamico : ITurno[] = []; 
+    var filtradoTercerDatoDinamico : ITurno[] = [];
 
     this.turnos = this.turnos.filter(turno => regex.test(turno.nombrePaciente) || regex.test(turno.especialidad) || regex.test(turno.presion!) || 
                                       regex.test(turno.altura!.toString()) || regex.test(turno.peso!.toString()) || regex.test(turno.temperatura!.toString()));
 
-    var arrayFiltrado : ITurno[] = tercerCopia.filter(turno => {
+    var arrayFiltrado : ITurno[] = primeraCopia.filter(turno => {
       if(turno.primerDatoDinamico)
       {
+        var values = Object.values(turno.primerDatoDinamico);
+
+        if(regex.test(values[0]))
+        {
+          filtradoPrimerDatoDinamico.push(turno);
+        }
+        
         var claves = Object.keys(turno.primerDatoDinamico);
 
         return claves.length > 0 && regex.test(claves[0]);
@@ -104,9 +114,17 @@ export class TurnosEspecialistaComponent {
       }
     });
 
-    var  segundoArrayFiltrado : ITurno[] = tercerCopia.filter(turno => {
+    var  segundoArrayFiltrado : ITurno[] = segundaCopia.filter(turno => {
       if(turno.segundoDatoDinamico)
       {
+
+        var values = Object.values(turno.segundoDatoDinamico);
+
+        if(regex.test(values[0]))
+        {
+          filtradoSegundoDatoDinamico.push(turno);
+        }
+
         var claves = Object.keys(turno.segundoDatoDinamico);
 
         return claves.length > 0 && regex.test(claves[0]);
@@ -120,6 +138,13 @@ export class TurnosEspecialistaComponent {
     var tercerArrayFiltrado : ITurno[] = tercerCopia.filter(turno => {
       if(turno.tercerDatoDinamico)
       {
+
+        var values = Object.values(turno.tercerDatoDinamico);
+
+        if(regex.test(values[0]))
+        {
+          filtradoTercerDatoDinamico.push(turno);
+        }
         var claves = Object.keys(turno.tercerDatoDinamico);
 
         return claves.length > 0 && regex.test(claves[0]);
@@ -130,7 +155,7 @@ export class TurnosEspecialistaComponent {
       }
     });
 
-    var unionArrayBusqueda = [...this.turnos, ...arrayFiltrado, ...segundoArrayFiltrado, ...tercerArrayFiltrado];
+    var unionArrayBusqueda = [...this.turnos, ...arrayFiltrado, ...segundoArrayFiltrado, ...tercerArrayFiltrado, ...filtradoPrimerDatoDinamico, ...filtradoSegundoDatoDinamico, ...filtradoTercerDatoDinamico];
 
     this.turnos = unionArrayBusqueda.filter((item, index, self) => 
       index === self.findIndex((t) => t.id === item.id)

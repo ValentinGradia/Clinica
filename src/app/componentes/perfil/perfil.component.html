@@ -23,6 +23,15 @@
 		@if (esPaciente(this.usuario)) {
 			<p><strong>Obra social: </strong> {{this.usuario.obraSocial}}</p>
 			<button (click)="descargarHistoriasClinicas()" class="btn btn-danger h-10">Descargar historias clinicas PDF</button>
+
+			<select class="form-select mt-5" aria-label="Default select example" (change)="seleccionarEspecialista($event)">
+				<option selected disabled class="p-2">Seleccione un especialista</option>
+				@for (especialista of especialistasPaciente; track $index) {
+					<option [value]="especialista.id">{{especialista.nombre}} {{especialista.apellido}}</option>
+				}
+			  </select>
+
+			<button (click)="descargarAtenciones()" class="btn btn-danger h-10">Descargar atenciones</button>
 		}
 	  </div>
 	 </div>

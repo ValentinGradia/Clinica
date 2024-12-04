@@ -6,11 +6,12 @@ import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { UsuarioService } from '../../services/usuario.service';
 import { RecaptchaModule } from "ng-recaptcha";
+import { DisplayDirective } from '../../directives/display.directive';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, RecaptchaModule],
+  imports: [FormsModule, CommonModule, RouterModule, RecaptchaModule, DisplayDirective],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

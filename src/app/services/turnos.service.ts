@@ -13,7 +13,7 @@ export class TurnosService {
   constructor(private firestore: Firestore) { }
   
 
-  async traerTurnosPaciente(idPaciente: string)
+  async traerTurnosPaciente(idPaciente: string) : Promise<ITurno[]>
   {
     var col = collection(this.firestore, Colecciones.TURNOS);
 
@@ -26,7 +26,7 @@ export class TurnosService {
       ...doc.data()        
     }));
 
-    return turnos;
+    return turnos as ITurno[];
   }
 
   async traerTurnosEspecialista(idEspecialista: string) : Promise<ITurno[]>

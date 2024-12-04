@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { IAdmin } from '../../interfaces/iadmin';
 import { IPaciente } from '../../interfaces/ipaciente';
@@ -21,11 +21,14 @@ import { ITurno } from '../../interfaces/iturno';
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
-export class PerfilComponent implements AfterViewInit {
+export class PerfilComponent implements AfterViewInit{
 
   auth = inject(AuthService);
   usuariosDB = inject(UsuarioService);
   turnosService = inject(TurnosService);
+
+  especialistasPaciente : IEspecialista[] = [];
+  idEspecialistaSeleccionado : string | null = null;
   usuario !: Usuario;
 
   mostrarSpinner : boolean = false;
@@ -39,6 +42,7 @@ export class PerfilComponent implements AfterViewInit {
   constructor(){
     this.usuario = this.auth.usuarioActual!;
   }
+
 
   get altura(){
     return this.credentials.get('altura');
@@ -56,11 +60,88 @@ export class PerfilComponent implements AfterViewInit {
     return this.credentials.get('presion');
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     if(this.esEspecialista(this.usuario))
       {
         this.setearHorariosAlmacenados(this.usuario);
       }
+    else if(this.esPaciente(this.usuario))
+    {
+      const especialistas : IEspecialista[] = await this.usuariosDB.traerEsepecialistas();
+      const turnos : ITurno[] = await this.turnosService.traerTurnosPaciente(this.usuario.id!);
+
+      turnos.forEach(turno => {
+        especialistas.forEach(especialista => {
+          if(turno.idEspecialista == especialista.id)
+          {
+            this.especialistasPaciente?.push(especialista);
+          }
+        });
+      });
+
+      this.especialistasPaciente = this.especialistasPaciente.filter((obj, index, self) =>
+        self.findIndex(o => o.id === obj.id) === index
+      );
+    }
+  }
+
+  seleccionarEspecialista(event: Event) : void
+  {
+    const valorSeleccionado = (event.target as HTMLSelectElement).value;
+    this.idEspecialistaSeleccionado = valorSeleccionado;
+  }
+
+  async descargarAtenciones() : Promise<void>
+  {
+    this.mostrarSpinner = !this.mostrarSpinner; 
+    var turnosPaciente : ITurno[] = await this.turnosService.traerTurnosEspecialista(this.idEspecialistaSeleccionado!) as ITurno[];
+    turnosPaciente = turnosPaciente.map(turno => {
+      return {
+        ...turno, 
+        dia: (turno.dia && turno.dia instanceof Timestamp) ? turno.dia.toDate() : turno.dia 
+      } as ITurno;
+    })
+
+    turnosPaciente = turnosPaciente.filter(turno => turno.idPaciente == this.usuario.id!);
+    var doc = new jsPDF();
+    const logo = 'assets/clinica.png';
+    doc.addImage(logo,'PNG',70,10,60,60);
+    doc.setFontSize(30);
+    doc.text(`${this.usuario.nombre}  ${this.usuario.apellido}`,50,80);
+    doc.setFontSize(24);
+    doc.text(`Atenciones`,90,95);
+
+    doc.setFontSize(16);
+    var ejeY = 110;
+    var ejeX = 10;
+    for (let i = 0; i < turnosPaciente.length; i++) {
+
+      const fecha = turnosPaciente[i].dia;
+
+      const dia = fecha.getDate().toString().padStart(2, "0"); 
+      const mes = (fecha.getMonth() + 1).toString().padStart(2, "0"); 
+      const anio = fecha.getFullYear();
+      doc.text(`Especialidad: ${turnosPaciente[i].especialidad}`,ejeX,ejeY);
+      ejeY += 10;
+      if(turnosPaciente[i].resenia)
+      {
+        doc.text(`Reseña: ${turnosPaciente[i].resenia}`,ejeX,ejeY);
+        ejeY += 10;
+      }
+      doc.text(`Dia: ${dia}/${mes}/${anio}`,ejeX,ejeY);
+      ejeY += 10;
+      doc.text(`Hora: ${turnosPaciente[i].hora}`,ejeX,ejeY);
+      ejeY += 25;
+
+      if(i == 3)
+      {
+        ejeX += 80;
+      }
+    }
+
+    const nombrePDF = `${this.usuario.nombre}_Atenciones_${new Date().toLocaleString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false })}.PDF`;
+    doc.save(nombrePDF);
+    this.mostrarSpinner = !this.mostrarSpinner; 
   }
   
 

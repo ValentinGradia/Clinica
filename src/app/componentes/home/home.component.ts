@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import { BotonDirective } from '../../directives/boton.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule,FormsModule,CommonModule],
+  imports: [RouterModule,FormsModule,CommonModule, BotonDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

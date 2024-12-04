@@ -48,9 +48,8 @@
   }
 </div>
 
-@if (mostrarCaptcha) {
 
-  <div class="captcha">
+  <div class="captcha" appDisplay [mostrar]="mostrarCaptcha">
     <re-captcha (resolved)="resolved($event)" siteKey="6LeqCYoqAAAAALuD7XmJ50Om_EZ7pkRNPwa2yL2P"></re-captcha>
   </div>
-}
+
